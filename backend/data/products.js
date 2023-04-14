@@ -1,8 +1,7 @@
 const products = [
   {
-    _id: "1",
     name: "God Of War I",
-    image: "/images/god_of_war_1.jpg",
+    image: "/images/god_of_war_1.png",
     description:
       "In God of War, players control Kratos, a Spartan warrior who is sent by the Greek gods to kill Ares, the god of war. As the story progresses, Kratos is revealed to be Ares former servant, who had been tricked into killing his own family and is haunted by terrible nightmares.",
     publisher: "Sony Computer Entertainment",
@@ -13,7 +12,6 @@ const products = [
     numReviews: 4,
   },
   {
-    _id: "2",
     name: "God Of War II",
     image: "/images/god_of_war_2.png",
     description:
@@ -26,7 +24,6 @@ const products = [
     numReviews: 8,
   },
   {
-    _id: "3",
     name: "God Of War 3",
     image: "/images/god_of_war_3.jpg",
     description:
@@ -39,7 +36,6 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: "4",
     name: "Call Of Duty",
     image: "/images/call_of_duty.jpg",
     description:
@@ -52,7 +48,6 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: "5",
     name: "Forza Horizon 4",
     image: "/images/forza_horizon_4.jpg",
     description:
@@ -65,7 +60,6 @@ const products = [
     numReviews: 10,
   },
   {
-    _id: "6",
     name: "Need For Speed Most Wanted",
     image: "/images/need_for_speed_mw.jpg",
     description:
@@ -79,4 +73,4 @@ const products = [
   },
 ];
 
-export default products;
+module.exports = { products };
