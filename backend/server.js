@@ -1,9 +1,12 @@
 const express = require("express");
 const { connection } = require("./config/db");
 const { router: productRoutes } = require("./routes/productRoutes");
+const { router: userRoutes } = require("./routes/userRoutes");
+
 const { errorHandler, notFound } = require("./middleware/errorMiddleware");
 
 const app = express();
+app.use(express.json());
 
 require("dotenv").config();
 
@@ -12,6 +15,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
 
 app.use(notFound);
 
