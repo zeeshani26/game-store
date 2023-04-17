@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Card,
@@ -7,28 +7,49 @@ import {
   Image,
   ListGroup,
   Row,
+  Modal,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addToCart, removeFromCart } from "../actions/cartActions";
 import Message from "../components/Message";
 
 const CartPage = () => {
   //   const { id } = useParams();
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+
+  const navigate = useNavigate();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
   };
   const checkoutHandler = () => {
-    console.log("checkout");
+    if (userInfo) {
+      navigate("/shipping");
+    }
+    setShowModal(true);
   };
 
   return (
     <div className="py-3">
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Login Required</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Please login to continue!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Row>
         <Col md={8}>
           <h2>Shopping Cart</h2>
@@ -109,6 +130,7 @@ const CartPage = () => {
             </ListGroup>
           )}
         </Col>
+
         <Col md={4}>
           <Card className="my-5">
             <ListGroup variant="flush">
