@@ -1,6 +1,15 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
+import {
+  CART_ADD_ITEM,
+  CART_CLEAR_ITEMS,
+  CART_REMOVE_ITEM,
+  CART_SAVE_PAYMENT_METHOD,
+  CART_SAVE_SHIPPING_ADDRESS,
+} from "../constants/cartConstants";
 
-export const cartReducer = (state = { cartItems: [] }, { type, payload }) => {
+export const cartReducer = (
+  state = { cartItems: [], shippingAddress: {} },
+  { type, payload }
+) => {
   switch (type) {
     case CART_ADD_ITEM: {
       const newItem = payload;
@@ -31,10 +40,23 @@ export const cartReducer = (state = { cartItems: [] }, { type, payload }) => {
       };
     }
 
-    case "CART_RESET": {
+    case CART_CLEAR_ITEMS: {
       return {
         ...state,
         cartItems: [],
+      };
+    }
+
+    case CART_SAVE_SHIPPING_ADDRESS: {
+      return {
+        ...state,
+        shippingAddress: payload,
+      };
+    }
+    case CART_SAVE_PAYMENT_METHOD: {
+      return {
+        ...state,
+        paymentMethod: payload,
       };
     }
 

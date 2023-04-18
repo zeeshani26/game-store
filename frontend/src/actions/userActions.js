@@ -42,6 +42,8 @@ export const logout = () => async (dispatch) => {
   dispatch({ type: USER_LOGOUT });
 
   localStorage.removeItem("userInfo");
+  localStorage.removeItem("shippingAddress");
+  localStorage.removeItem("cartItems");
 };
 
 // useremail cannot be same but username can be same. This checked in backend

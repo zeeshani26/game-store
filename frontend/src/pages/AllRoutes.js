@@ -7,6 +7,8 @@ import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import ProfilePage from "./ProfilePage";
 import ShippingPage from "./ShippingPage";
+import PaymentPage from "./PaymentPage";
+import OrderSummaryPage from "./OrderSummaryPage";
 
 const AllRoutes = () => {
   return (
@@ -19,6 +21,8 @@ const AllRoutes = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/shipping" element={<ShippingPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/summary" element={<OrderSummaryPage />} />
       </Routes>
     </>
   );

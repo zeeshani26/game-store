@@ -7,19 +7,30 @@ import {
   FormGroup,
   FormLabel,
 } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { saveShippingAddress } from "../actions/cartActions";
+import { useNavigate } from "react-router-dom";
+import CheckoutSteps from "../components/CheckoutSteps";
 
 const ShippingPage = () => {
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [country, setCountry] = useState("");
+  const shippingAddress = useSelector((state) => state.cart.shippingAddress);
 
+  const [address, setAddress] = useState(shippingAddress.address);
+  const [city, setCity] = useState(shippingAddress.city);
+  const [pin, setPin] = useState(shippingAddress.pin);
+  const [country, setCountry] = useState(shippingAddress.country);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const submitHandler = (e) => {
     e.preventDefault();
+    dispatch(saveShippingAddress({ address, city, pin, country }));
+    navigate("/payment");
   };
 
   return (
     <FormContainer>
+      <CheckoutSteps step1 step2 />
       <h2>Shipping</h2>
       <Form onSubmit={submitHandler}>
         <FormGroup controlId="address">
@@ -43,13 +54,13 @@ const ShippingPage = () => {
           ></FormControl>
         </FormGroup>
         <FormGroup controlId="address">
-          <FormLabel>Postal Code</FormLabel>
+          <FormLabel>Pin Code</FormLabel>
           <FormControl
             type="text"
-            value={postalCode}
-            placeholder="Enter Postal Code"
+            value={pin}
+            placeholder="Enter PIN Code"
             required
-            onChange={(e) => setPostalCode(e.target.value)}
+            onChange={(e) => setPin(e.target.value)}
           ></FormControl>
         </FormGroup>
         <FormGroup controlId="country">
@@ -62,7 +73,7 @@ const ShippingPage = () => {
             onChange={(e) => setCountry(e.target.value)}
           ></FormControl>
         </FormGroup>
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="primary" className="mt-3">
           Continue to Payment
         </Button>
       </Form>
