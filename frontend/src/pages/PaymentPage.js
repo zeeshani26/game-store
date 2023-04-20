@@ -21,7 +21,7 @@ const PaymentPage = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(savePaymentMethod(paymentMethod));
-    navigate("/summary");
+    navigate("/order");
   };
 
   return (

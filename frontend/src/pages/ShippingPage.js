@@ -53,7 +53,7 @@ const ShippingPage = () => {
             onChange={(e) => setCity(e.target.value)}
           ></FormControl>
         </FormGroup>
-        <FormGroup controlId="address">
+        <FormGroup controlId="pin">
           <FormLabel>Pin Code</FormLabel>
           <FormControl
             type="text"
