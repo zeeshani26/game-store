@@ -105,7 +105,6 @@ export const listMyOrders = () => async (dispatch, getState) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
     dispatch({ type: ORDER_LIST_MY_SUCCESS, payload: data });
   } catch (error) {
     const message =
