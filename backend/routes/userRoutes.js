@@ -3,7 +3,7 @@ const router = express.Router();
 const { User } = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const { generateToken } = require("../utils/generateToken");
-const { protect } = require("../middleware/authMiddleware");
+const { protect, admin } = require("../middleware/authMiddleware");
 
 router.post(
   "/login",
@@ -97,6 +97,15 @@ router.put(
       res.status(404);
       throw new Error("User not found");
     }
+  })
+);
+router.get(
+  "/",
+  protect,
+  admin,
+  asyncHandler(async (req, res) => {
+    const user = await User.find({});
+    res.json(user);
   })
 );
 

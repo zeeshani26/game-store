@@ -8,7 +8,7 @@ import { createOrder } from "../actions/orderActions";
 import { ORDER_CREATE_RESET } from "../constants/orderConstants";
 import { USER_DETAILS_RESET } from "../constants/userConstants";
 
-const OrderSummaryPage = ({ history }) => {
+const OrderSummaryPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

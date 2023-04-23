@@ -10,6 +10,7 @@ import ShippingPage from "./ShippingPage";
 import PaymentPage from "./PaymentPage";
 import OrderSummaryPage from "./OrderSummaryPage";
 import OrderPage from "./OrderPage";
+import UserListPage from "./UserListPage";
 
 const AllRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const AllRoutes = () => {
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/order" element={<OrderSummaryPage />} />
         <Route path="/order/:id" element={<OrderPage />} />
+        <Route path="/admin/userlist" element={<UserListPage />} />
       </Routes>
     </>
   );
