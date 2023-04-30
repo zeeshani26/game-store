@@ -27,7 +27,7 @@ const productSchema = mongoose.Schema(
     description: {
       type: String,
       required: true,
-      default: 0,
+      default: "",
     },
     reviews: [reviewSchema],
     rating: {

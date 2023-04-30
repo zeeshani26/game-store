@@ -99,6 +99,7 @@ router.put(
     }
   })
 );
+
 router.get(
   "/",
   protect,
@@ -106,6 +107,65 @@ router.get(
   asyncHandler(async (req, res) => {
     const user = await User.find({});
     res.json(user);
+  })
+);
+
+// Get Users by ID
+
+router.get(
+  "/:id",
+  protect,
+  admin,
+  asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id).select("-password");
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
+  })
+);
+
+// Delete User
+router.delete(
+  "/:id",
+  protect,
+  admin,
+  asyncHandler(async (req, res) => {
+    try {
+      await User.findByIdAndDelete(req.params.id);
+      res.json({ message: "User removed" });
+    } catch (err) {
+      res.status(404);
+      throw new Error(`User not found. ${err}`);
+    }
+  })
+);
+
+// Update/Edit user
+router.put(
+  "/:id",
+  protect,
+  asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id); //not logged in but from id
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.isAdmin = req.body.isAdmin;
+
+      const updatedUser = await user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+      });
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
   })
 );
 

@@ -1,20 +1,31 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { listUsers } from "../actions/userActions";
+import { deleteUser, listUsers } from "../actions/userActions";
 import Load from "../components/Load";
 import Message from "../components/Message";
 import { Button, Table } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const UserListPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, error, users } = useSelector((state) => state.userList);
+  const { userInfo } = useSelector((state) => state.userLogin);
+  const { success: successDelete } = useSelector((state) => state.userDelete);
 
   useEffect(() => {
-    dispatch(listUsers());
-  }, [dispatch]);
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(listUsers());
+    } else {
+      navigate("/login");
+    }
+  }, [dispatch, userInfo, navigate, successDelete]);
+
   const deleteHandler = (id) => {
-    console.log("Del");
+    if (window.confirm("Are you sure you want to delete the User?")) {
+      dispatch(deleteUser(id));
+    }
   };
   return (
     <>
@@ -43,14 +54,14 @@ const UserListPage = () => {
                   <a href={`mailto:${user.email}`}>{user.email}</a>
                 </td>
                 <td>
-                  {user.admin ? (
+                  {user.isAdmin ? (
                     <i className="fas fa-check" style={{ color: "green" }}></i>
                   ) : (
                     <i className="fas fa-times" style={{ color: "red" }}></i>
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`/user/${user._id}/edit`}>
+                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>
@@ -64,7 +75,7 @@ const UserListPage = () => {
                   </Button>
                 </td>
               </tr>
-            ))}{" "}
+            ))}
           </tbody>
         </Table>
       )}
