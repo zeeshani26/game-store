@@ -9,9 +9,12 @@ import Load from "../components/Load";
 import {
   getOrderDetails,
   payOrder,
-  //   deliverOrder,
+  deliverOrder,
 } from "../actions/orderActions";
-import { ORDER_PAY_RESET } from "../constants/orderConstants";
+import {
+  ORDER_PAY_RESET,
+  ORDER_DELIVERED_RESET,
+} from "../constants/orderConstants";
 
 const OrderPage = () => {
   const { id } = useParams();
@@ -26,6 +29,10 @@ const OrderPage = () => {
 
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
+
+  const orderDelivered = useSelector((state) => state.orderDelivered);
+  const { loading: loadingDelivered, success: successDelivered } =
+    orderDelivered;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -61,9 +68,9 @@ const OrderPage = () => {
       document.body.appendChild(script);
     };
 
-    if (!order || order._id !== id || successPay) {
+    if (!order || order._id !== id || successPay || successDelivered) {
       dispatch({ type: ORDER_PAY_RESET }); // We dont always have to dispatch from action files
-      //   //   dispatch({ type: ORDER_DELIVER_RESET });
+      dispatch({ type: ORDER_DELIVERED_RESET });
       dispatch(getOrderDetails(id)); // to get the most recent order details
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -72,15 +79,15 @@ const OrderPage = () => {
         setSdkReady(true);
       }
     }
-  }, [dispatch, id, order, navigate, userInfo, successPay]);
+  }, [dispatch, id, order, navigate, userInfo, successPay, successDelivered]);
 
   const successPaymentHandler = (paymentResult) => {
     // console.log(paymentResult);
     dispatch(payOrder(id, paymentResult));
   };
 
-  const deliverHandler = () => {
-    // dispatch(deliverOrder(order));
+  const handleDelivered = () => {
+    dispatch(deliverOrder(order));
   };
 
   return loading ? (
@@ -89,7 +96,7 @@ const OrderPage = () => {
     <Message variant="danger">{error}</Message>
   ) : (
     <>
-      <h1>Order {order._id}</h1>
+      <h2>Order {order._id}</h2>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
@@ -206,7 +213,7 @@ const OrderPage = () => {
                   )}
                 </ListGroup.Item>
               )}
-              {/* {loadingDeliver && <Load />} */}
+              {loadingDelivered && <Load />}
               {userInfo &&
                 userInfo.isAdmin &&
                 order.isPaid &&
@@ -215,7 +222,7 @@ const OrderPage = () => {
                     <Button
                       type="button"
                       className="btn btn-block"
-                      onClick={deliverHandler}
+                      onClick={handleDelivered}
                     >
                       Mark As Delivered
                     </Button>

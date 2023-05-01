@@ -7,6 +7,7 @@ import Load from "../components/Load";
 import FormContainer from "../components/FormContainer";
 import { listProductDetails, updateProduct } from "../actions/productActions";
 import { PRODUCT_UPDATE_RESET } from "../constants/productContants";
+import axios from "axios";
 
 const ProductEditPage = () => {
   const { id: productId } = useParams();
@@ -20,6 +21,7 @@ const ProductEditPage = () => {
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState("");
   const [description, setDescription] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
@@ -68,6 +70,23 @@ const ProductEditPage = () => {
     );
   };
 
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+    setUploading(true);
+    try {
+      const { data } = await axios.post("/api/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setImage(data);
+      setUploading(false);
+    } catch (e) {
+      console.log(e);
+      setUploading(false);
+    }
+  };
+
   return (
     <>
       <Link to="/admin/productlist" className="btn btn-light my-3">
@@ -111,6 +130,12 @@ const ProductEditPage = () => {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
+              <Form.Control
+                type="file"
+                onChange={uploadFileHandler}
+                className="mt-1"
+              ></Form.Control>
+              {uploading && <Load />}
             </Form.Group>
             <Form.Group controlId="publisher">
               <Form.Label>Publisher</Form.Label>
@@ -121,7 +146,7 @@ const ProductEditPage = () => {
                 onChange={(e) => setPublisher(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            <Form.Group controlId="Category">
+            <Form.Group controlId="category">
               <Form.Label>Category</Form.Label>
               <Form.Control
                 type="text"
@@ -139,7 +164,7 @@ const ProductEditPage = () => {
                 onChange={(e) => setCountInStock(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            <Form.Group controlId="Description">
+            <Form.Group controlId="description">
               <Form.Label>Description</Form.Label>
               <Form.Control
                 type="text"
@@ -148,11 +173,7 @@ const ProductEditPage = () => {
                 onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            <Button
-              type="submit"
-              variant="primary"
-              style={{ marginTop: "20px" }}
-            >
+            <Button type="submit" variant="primary" className="mt-3">
               Update
             </Button>
           </Form>

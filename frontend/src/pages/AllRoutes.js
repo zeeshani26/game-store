@@ -14,6 +14,7 @@ import UserListPage from "./UserListPage";
 import UserEditPage from "./UserEditPage";
 import ProductListPage from "./ProductListPage";
 import ProductEditPage from "./ProductEditPage";
+import OrderListPage from "./OrderListPage";
 
 const AllRoutes = () => {
   return (
@@ -30,9 +31,10 @@ const AllRoutes = () => {
         <Route path="/order" element={<OrderSummaryPage />} />
         <Route path="/order/:id" element={<OrderPage />} />
         <Route path="/admin/userlist" element={<UserListPage />} />
-        <Route path="/admin/productlist" element={<ProductListPage />} />
         <Route path="/admin/user/:id/edit" element={<UserEditPage />} />
+        <Route path="/admin/productlist" element={<ProductListPage />} />
         <Route path="/admin/product/:id/edit" element={<ProductEditPage />} />
+        <Route path="/admin/orderlist" element={<OrderListPage />} />
       </Routes>
     </>
   );

@@ -147,6 +147,7 @@ router.delete(
 router.put(
   "/:id",
   protect,
+  admin,
   asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id); //not logged in but from id
     if (user) {
