@@ -22,6 +22,16 @@ router.get(
     res.json({ products, page, TotalPages: Math.ceil(count / pageSize) });
   })
 );
+
+// Get Top Rated Product
+router.get(
+  "/top",
+  asyncHandler(async (req, res) => {
+    const products = await Product.find({}).sort({ rating: -1 }).limit(4);
+    res.json(products);
+  })
+);
+
 // Get single Product
 router.get(
   "/:id",
@@ -107,15 +117,6 @@ router.patch(
       res.status(404);
       throw new Error(err);
     }
-  })
-);
-
-// Get Top Rated Product
-router.get(
-  "/top",
-  protect,
-  asyncHandler(async (req, res) => {
-    const products = await Product.find({}).sort({ rating: -1 }).limit(3);
   })
 );
 

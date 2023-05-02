@@ -16,3 +16,20 @@ h2 {
   text-align: center;
 }
 
+.carousel {
+  width: auto;
+  height: auto;
+  margin: auto;
+}
+
+@media (min-width: 768px) {
+  .carousel {
+    width: 380px;
+    margin: auto;
+  }
+}
+
+.pagination {
+  margin:auto
+}
+

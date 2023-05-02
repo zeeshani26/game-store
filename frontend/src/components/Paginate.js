@@ -3,7 +3,6 @@ import { Pagination } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
 const Paginate = ({ pages, page, keyword = "" }) => {
-  console.log(pages, page, keyword);
   return (
     pages > 1 && (
       <Pagination>
