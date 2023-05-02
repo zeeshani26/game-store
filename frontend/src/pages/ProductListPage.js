@@ -4,23 +4,20 @@ import { Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Load from "../components/Load";
-// import Paginate from "../components/Paginate";
 import {
   listProducts,
   deleteProduct,
   createProduct,
 } from "../actions/productActions";
 import { PRODUCT_CREATE_RESET } from "../constants/productContants";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ProductListPage = () => {
-  const { pageNumber = 1 } = useParams();
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const productList = useSelector((state) => state.productList);
-  const { loading, error, products, page, pages } = productList;
+  const { loading, error, products } = productList;
 
   const {
     loading: loadingDelete,
@@ -58,7 +55,6 @@ const ProductListPage = () => {
     successDelete,
     successCreate,
     createdProduct,
-    // pageNumber,
   ]);
 
   const deleteHandler = (id) => {
