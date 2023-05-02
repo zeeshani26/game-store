@@ -60,6 +60,7 @@ export const logout = () => async (dispatch) => {
   dispatch({ type: USER_LIST_RESET });
   dispatch({ type: ORDER_LIST_MY_RESET });
   dispatch({ type: CART_CLEAR_ITEMS });
+
   localStorage.removeItem("userInfo");
   localStorage.removeItem("shippingAddress");
   localStorage.removeItem("cartItems");

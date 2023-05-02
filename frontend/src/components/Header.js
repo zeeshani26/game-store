@@ -4,6 +4,7 @@ import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../actions/userActions";
 import { useNavigate } from "react-router-dom";
+import Search from "./Search";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -19,10 +20,13 @@ const Header = () => {
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>The Game Store</Navbar.Brand>
+            <Navbar.Brand>
+              <h2>The Game Store</h2>
+            </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
+            <Search />
             <Nav className="ms-auto">
               <LinkContainer to="/cart">
                 <Nav.Link>

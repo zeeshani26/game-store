@@ -8,8 +8,18 @@ const { protect, admin } = require("../middleware/authMiddleware");
 router.get(
   "/",
   asyncHandler(async (req, res) => {
-    const products = await Product.find({});
-    res.json(products);
+    const pageSize = 4;
+    const page = Number(req.query.pageNumber) || 1;
+
+    const search = req.query.search
+      ? { name: { $regex: req.query.search, $options: "i" } }
+      : {}; // options i for case insensitive
+
+    const count = await Product.countDocuments({ ...search });
+    const products = await Product.find({ ...search })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
+    res.json({ products, page, TotalPages: Math.ceil(count / pageSize) });
   })
 );
 // Get single Product
@@ -99,4 +109,14 @@ router.patch(
     }
   })
 );
+
+// Get Top Rated Product
+router.get(
+  "/top",
+  protect,
+  asyncHandler(async (req, res) => {
+    const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+  })
+);
+
 module.exports = { router };
