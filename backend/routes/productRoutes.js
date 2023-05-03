@@ -8,6 +8,10 @@ const { protect, admin } = require("../middleware/authMiddleware");
 router.get(
   "/",
   asyncHandler(async (req, res) => {
+    if (req.query.search === "" && req.query.pageNumber === "") {
+      const products = await Product.find({});
+      res.json({ products });
+    }
     const pageSize = 4;
     const page = Number(req.query.pageNumber) || 1;
 

@@ -32,7 +32,7 @@ export const listProducts =
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
       const { data } = await axios.get(
-        `/api/products?search=${query}&pageNumber=${pageNumber}`
+        `https://backend-48az.onrender.com/api/products?search=${query}&pageNumber=${pageNumber}`
       );
       console.log(data);
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
@@ -50,7 +50,9 @@ export const listProducts =
 export const listProductDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
-    const { data } = await axios.get(`/api/products/${id}`);
+    const { data } = await axios.get(
+      `https://backend-48az.onrender.com/api/products/${id}`
+    );
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
     dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
   } catch (err) {
@@ -69,7 +71,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_DELETE_REQUEST });
 
     const token = getState().userLogin.userInfo.token;
-    await axios.delete(`/api/products/${id}`, {
+    await axios.delete(`https://backend-48az.onrender.com/api/products/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -96,7 +98,7 @@ export const createProduct = () => async (dispatch, getState) => {
 
     const token = getState().userLogin.userInfo.token;
     const { data } = await axios.post(
-      `/api/products/`,
+      `https://backend-48az.onrender.com/api/products/`,
       {}, // not sending any data
       {
         headers: {
@@ -126,7 +128,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 
     const token = getState().userLogin.userInfo.token;
     const { data } = await axios.patch(
-      `/api/products/${product._id}`,
+      `https://backend-48az.onrender.com/api/products/${product._id}`,
       product,
       {
         headers: {
@@ -159,7 +161,7 @@ export const createProductReview =
 
       const token = getState().userLogin.userInfo.token;
       const { data } = await axios.patch(
-        `/api/products/${productId}/reviews`,
+        `https://backend-48az.onrender.com/api/products/${productId}/reviews`,
         review,
         {
           headers: {
@@ -188,7 +190,9 @@ export const createProductReview =
 export const listTopProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_TOP_REQUEST });
-    const { data } = await axios.get(`/api/products/top`);
+    const { data } = await axios.get(
+      `https://backend-48az.onrender.com/api/products/top`
+    );
     console.log(data);
     dispatch({ type: PRODUCT_TOP_SUCCESS, payload: data });
   } catch (err) {

@@ -9,7 +9,9 @@ import {
 export const addToCart = (id, qty) => async (dispatch, getState) => {
   //getstate to get the state from redux
   try {
-    const product = (await axios.get(`/api/products/${id}`)).data;
+    const product = (
+      await axios.get(`https://backend-48az.onrender.com/api/products/${id}`)
+    ).data;
     const item = {
       name: product.name,
       qty: qty,

@@ -33,7 +33,7 @@ export const login = (email, password) => async (dispatch) => {
     dispatch({ type: USER_LOGIN_REQUEST });
 
     const { data } = await axios.post(
-      "/api/users/login",
+      "https://backend-48az.onrender.com/api/users/login",
       { email, password },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -72,7 +72,7 @@ export const register = (name, email, password) => async (dispatch) => {
     dispatch({ type: USER_REGISTER_REQUEST });
 
     const { data } = await axios.post(
-      "/api/users",
+      "https://backend-48az.onrender.com/api/users",
       { name, email, password },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -97,11 +97,14 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 
     const token = getState().userLogin.userInfo.token;
     // console.log(token);
-    const { data } = await axios.get(`/api/users/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const { data } = await axios.get(
+      `https://backend-48az.onrender.com/api/users/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
   } catch (err) {
     dispatch({
@@ -119,12 +122,16 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     dispatch({ type: USER_UPDATE_PROFILE__REQUEST });
 
     const token = getState().userLogin.userInfo.token;
-    const { data } = await axios.put(`/api/users/profile`, user, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const { data } = await axios.put(
+      `https://backend-48az.onrender.com/api/users/profile`,
+      user,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     dispatch({ type: USER_UPDATE_PROFILE__SUCCESS, payload: data });
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     localStorage.setItem("userInfo", JSON.stringify(data));
@@ -148,11 +155,14 @@ export const listUsers = () => async (dispatch, getState) => {
     dispatch({ type: USER_LIST_REQUEST });
 
     const token = getState().userLogin.userInfo.token;
-    const { data } = await axios.get(`/api/users`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const { data } = await axios.get(
+      `https://backend-48az.onrender.com/api/users`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     dispatch({ type: USER_LIST_SUCCESS, payload: data });
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
@@ -175,7 +185,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
     dispatch({ type: USER_DELETE_REQUEST });
 
     const token = getState().userLogin.userInfo.token;
-    await axios.delete(`/api/users/${id}`, {
+    await axios.delete(`https://backend-48az.onrender.com/api/users/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -201,12 +211,16 @@ export const updateUser = (user) => async (dispatch, getState) => {
     dispatch({ type: USER_UPDATE_REQUEST });
 
     const token = getState().userLogin.userInfo.token;
-    const { data } = await axios.put(`/api/users/${user._id}`, user, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const { data } = await axios.put(
+      `https://backend-48az.onrender.com/api/users/${user._id}`,
+      user,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
   } catch (error) {

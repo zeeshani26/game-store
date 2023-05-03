@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const { connection } = require("./config/db");
 const { router: productRoutes } = require("./routes/productRoutes");
@@ -12,6 +13,12 @@ const { errorHandler, notFound } = require("./middleware/errorMiddleware");
 
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+  })
+);
 app.use(morgan("dev"));
 
 require("dotenv").config();
