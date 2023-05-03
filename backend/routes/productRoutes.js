@@ -125,7 +125,7 @@ router.patch(
 );
 
 // Post a Product Review
-router.get(
+router.post(
   "/:id/reviews",
   protect,
   asyncHandler(async (req, res) => {

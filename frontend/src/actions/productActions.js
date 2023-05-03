@@ -160,7 +160,7 @@ export const createProductReview =
       dispatch({ type: PRODUCT_CREATE_REVIEW_REQUEST });
 
       const token = getState().userLogin.userInfo.token;
-      const { data } = await axios.patch(
+      const { data } = await axios.post(
         `https://backend-48az.onrender.com/api/products/${productId}/reviews`,
         review,
         {
