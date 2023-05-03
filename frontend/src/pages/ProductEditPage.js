@@ -7,7 +7,6 @@ import Load from "../components/Load";
 import FormContainer from "../components/FormContainer";
 import { listProductDetails, updateProduct } from "../actions/productActions";
 import { PRODUCT_UPDATE_RESET } from "../constants/productContants";
-import axios from "axios";
 
 const ProductEditPage = () => {
   const { id: productId } = useParams();
@@ -21,7 +20,6 @@ const ProductEditPage = () => {
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState("");
   const [description, setDescription] = useState("");
-  const [uploading, setUploading] = useState(false);
 
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
@@ -70,23 +68,6 @@ const ProductEditPage = () => {
     );
   };
 
-  const uploadFileHandler = async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("image", file);
-    setUploading(true);
-    try {
-      const { data } = await axios.post("/api/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      setImage(data);
-      setUploading(false);
-    } catch (e) {
-      console.log(e);
-      setUploading(false);
-    }
-  };
-
   return (
     <>
       <Link to="/admin/productlist" className="btn btn-light my-3">
@@ -130,12 +111,6 @@ const ProductEditPage = () => {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
-              <Form.Control
-                type="file"
-                onChange={uploadFileHandler}
-                className="mt-1"
-              ></Form.Control>
-              {uploading && <Load />}
             </Form.Group>
             <Form.Group controlId="publisher">
               <Form.Label>Publisher</Form.Label>
