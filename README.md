@@ -53,7 +53,7 @@ Start the server
   npm start
 ```
 
-Get to the server directory
+Get to the client side directory
 
 ```bash
   cd frontend
