@@ -36,8 +36,7 @@ Clone the project
 ```bash
   git clone https://github.com/zeeshani26/game-store
 ```
-
-Start the server
+Get to the server directory
 
 ```bash
   cd backend
@@ -48,12 +47,13 @@ Install dependencies
 ```bash
   npm install
 ```
+Start the server
 
 ```bash
   npm start
 ```
 
-Start the client side
+Get to the server directory
 
 ```bash
   cd frontend
@@ -64,6 +64,7 @@ Install dependencies
 ```bash
   npm install
 ```
+Start the client side
 
 ```bash
   npm start
