@@ -5,6 +5,7 @@
 
 The Game Store is an E-Commerce platform to buy latest game titles online.
 
+Note : The Backend for the site is deployed for free on render.com therefore it might take 2-3 minutes max to load the site for teh first time. Your patience is appreciated.
 
 ## Features
 
