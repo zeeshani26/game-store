@@ -17,6 +17,13 @@ The Game Store is an E-Commerce platform to buy latest game titles online.
 - Paypal Integration
 - Admin Features
 
+## Screenshots
+
+![Home](https://github.com/zeeshani26/game-store/assets/101065815/1bacfc82-b518-40c8-8c99-53edda9f2036)
+![Signin](https://github.com/zeeshani26/game-store/assets/101065815/b527365d-49b6-41a0-b3a7-bb819e873872)
+![Single Product](https://github.com/zeeshani26/game-store/assets/101065815/7b38ebb4-6d02-42ab-abc2-e537fef36a05)
+![Cart](https://github.com/zeeshani26/game-store/assets/101065815/b6efa730-dcd9-4565-affe-68972c4bf25e)
+![Admin Section](https://github.com/zeeshani26/game-store/assets/101065815/37d5b522-c6dd-4a6d-af40-a460afa1a952)
 
 ## Tech Stack
 
