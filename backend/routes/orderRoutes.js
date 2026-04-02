@@ -3,6 +3,7 @@ const router = express.Router();
 const { Order } = require("../models/orderModel");
 const asyncHandler = require("express-async-handler");
 const { protect, admin } = require("../middleware/authMiddleware");
+const { reserveStock, releaseStock } = require("../utils/reserveStock");
 
 router.post(
   "/",
@@ -20,7 +21,11 @@ router.post(
     if (orderItems && orderItems.length === 0) {
       res.status(404);
       throw new Error("No order items");
-    } else {
+    }
+
+    await reserveStock(orderItems);
+
+    try {
       const order = new Order({
         orderItems,
         user: req.user._id,
@@ -33,6 +38,9 @@ router.post(
       });
       const createdOrder = await order.save();
       res.status(201).json(createdOrder);
+    } catch (e) {
+      await releaseStock(orderItems);
+      throw e;
     }
   })
 );
@@ -64,6 +72,41 @@ router.get(
       res.status(404);
       throw new Error("Order not found");
     }
+  })
+);
+
+// Cancel unpaid order (restores stock)
+router.put(
+  "/:id/cancel",
+  protect,
+  asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      res.status(404);
+      throw new Error("Order not found");
+    }
+    if (
+      order.user.toString() !== req.user._id.toString() &&
+      !req.user.isAdmin
+    ) {
+      res.status(403);
+      throw new Error("Not authorized to cancel this order");
+    }
+    if (order.isCancelled) {
+      res.status(400);
+      throw new Error("Order is already cancelled");
+    }
+    if (order.isPaid) {
+      res.status(400);
+      throw new Error("Paid orders cannot be cancelled here");
+    }
+
+    await releaseStock(order.orderItems);
+    order.isCancelled = true;
+    order.cancelledAt = new Date();
+    const updated = await order.save();
+    res.json(updated);
   })
 );
 

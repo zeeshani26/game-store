@@ -33,7 +33,6 @@ const UserEditPage = () => {
       navigate("/admin/userlist");
     } else {
       if (!user.name || user._id !== userId) {
-        // to fill by default
         dispatch(getUserDetails(userId));
       } else {
         setName(user.name);
@@ -50,11 +49,14 @@ const UserEditPage = () => {
 
   return (
     <>
-      <Link to="/admin/userlist" className="btn btn-light my-3">
-        Go Back
+      <Link
+        to="/admin/userlist"
+        className="btn btn-outline-store mb-4 d-inline-flex align-items-center gap-2"
+      >
+        ← Back to users
       </Link>
-      <FormContainer>
-        <h2>Edit User</h2>
+      <FormContainer wide>
+        <h1 className="section-heading mb-4">Edit user</h1>
         {loadingUpdate && <Load />}
         {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
@@ -63,37 +65,37 @@ const UserEditPage = () => {
           <Message variant="danger">{error}</Message>
         ) : (
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name">
+            <Form.Group controlId="name" className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control
-                type="name"
-                placeholder="Enter name"
+                type="text"
+                placeholder="Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
 
-            <Form.Group controlId="email">
-              <Form.Label>Email Address</Form.Label>
+            <Form.Group controlId="email" className="mb-3">
+              <Form.Label>Email</Form.Label>
               <Form.Control
                 type="email"
-                placeholder="Enter email"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
 
-            <Form.Group controlId="isadmin">
+            <Form.Group controlId="isadmin" className="mb-4">
               <Form.Check
                 type="checkbox"
-                label="Is Admin"
+                label="Administrator"
                 checked={isAdmin}
                 onChange={(e) => setIsAdmin(e.target.checked)}
-              ></Form.Check>
+              />
             </Form.Group>
 
-            <Button type="submit" variant="primary">
-              Update
+            <Button type="submit" className="btn-store-primary w-100 py-2">
+              Update user
             </Button>
           </Form>
         )}

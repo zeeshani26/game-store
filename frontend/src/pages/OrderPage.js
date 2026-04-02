@@ -10,6 +10,7 @@ import {
   getOrderDetails,
   payOrder,
   deliverOrder,
+  cancelOrder,
 } from "../actions/orderActions";
 import {
   ORDER_PAY_RESET,
@@ -25,7 +26,6 @@ const OrderPage = () => {
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
-  //   console.log(orderDetails);
 
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
@@ -37,26 +37,33 @@ const OrderPage = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  if (!loading) {
-    //   Calculate prices
-    const addDecimals = (num) => {
-      return (Math.round(num * 100) / 100).toFixed(2);
-    };
+  const orderOwnerId = order?.user?._id || order?.user;
+  const isOrderOwner =
+    userInfo &&
+    orderOwnerId &&
+    String(orderOwnerId) === String(userInfo._id);
 
-    order.itemsPrice = addDecimals(
-      order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-    );
-  }
-  // Paypal Steps completed using Youtube Tutorial
+  const addDecimals = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2);
+  };
+
+  const displayItemsPrice =
+    order && Array.isArray(order.orderItems)
+      ? addDecimals(
+          order.orderItems.reduce(
+            (acc, item) => acc + item.price * item.qty,
+            0
+          )
+        )
+      : "0.00";
+
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
     }
 
     const addPayPalScript = async () => {
-      // paypal sdk script
       const { data: clientId } = await axios.get("/api/config/paypal");
-      //   console.log(clientId);
       const script = document.createElement("script");
       script.type = "text/javascript";
       script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
@@ -64,15 +71,14 @@ const OrderPage = () => {
       script.onload = () => {
         setSdkReady(true);
       };
-      // dynamically adding paypal script
       document.body.appendChild(script);
     };
 
     if (!order || order._id !== id || successPay || successDelivered) {
-      dispatch({ type: ORDER_PAY_RESET }); // We dont always have to dispatch from action files
+      dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: ORDER_DELIVERED_RESET });
-      dispatch(getOrderDetails(id)); // to get the most recent order details
-    } else if (!order.isPaid) {
+      dispatch(getOrderDetails(id));
+    } else if (!order.isPaid && !order.isCancelled) {
       if (!window.paypal) {
         addPayPalScript();
       } else {
@@ -82,7 +88,6 @@ const OrderPage = () => {
   }, [dispatch, id, order, navigate, userInfo, successPay, successDelivered]);
 
   const successPaymentHandler = (paymentResult) => {
-    // console.log(paymentResult);
     dispatch(payOrder(id, paymentResult));
   };
 
@@ -96,23 +101,32 @@ const OrderPage = () => {
     <Message variant="danger">{error}</Message>
   ) : (
     <>
-      <h2>Order {order._id}</h2>
+      <h1 className="section-heading mb-1">Order</h1>
+      <p className="text-muted small font-monospace mb-2">{order._id}</p>
+      {order.isCancelled && (
+        <div className="mb-4">
+          <Message variant="warning">
+            This order was cancelled. Inventory has been released back to the
+            catalog.
+          </Message>
+        </div>
+      )}
       <Row>
         <Col md={8}>
-          <ListGroup variant="flush">
+          <ListGroup variant="flush" className="content-panel">
             <ListGroup.Item>
-              <h2>Shipping</h2>
-              <p>
-                <strong>Name : </strong> {order.user.name}
+              <h2 className="section-subheading">Shipping</h2>
+              <p className="mb-1">
+                <strong className="text-dark">Name:</strong> {order.user.name}
               </p>
-              <p>
-                <strong>Email : </strong>{" "}
+              <p className="mb-1">
+                <strong className="text-dark">Email:</strong>{" "}
                 <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
               </p>
-              <p>
-                <strong>Address :</strong>
+              <p className="mb-3">
+                <strong className="text-dark">Address:</strong>{" "}
                 {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
-                {order.shippingAddress.postalCode},{" "}
+                {order.shippingAddress.postalCode || order.shippingAddress.pin},{" "}
                 {order.shippingAddress.country}
               </p>
               {order.isDelivered ? (
@@ -120,33 +134,33 @@ const OrderPage = () => {
                   Delivered on {order.deliveredAt}
                 </Message>
               ) : (
-                <Message variant="danger">Not Delivered</Message>
+                <Message variant="warning">Not delivered yet</Message>
               )}
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <p>
-                <strong>Method: </strong>
+              <h2 className="section-subheading">Payment</h2>
+              <p className="mb-3">
+                <strong className="text-dark">Method:</strong>{" "}
                 {order.paymentMethod}
               </p>
               {order.isPaid ? (
                 <Message variant="success">Paid on {order.paidAt}</Message>
               ) : (
-                <Message variant="danger">Not Paid</Message>
+                <Message variant="warning">Awaiting payment</Message>
               )}
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Order Items</h2>
+              <h2 className="section-subheading">Items</h2>
               {order.orderItems.length === 0 ? (
                 <Message>Order is empty</Message>
               ) : (
-                <ListGroup variant="flush">
+                <ListGroup variant="flush" className="border-0">
                   {order.orderItems.map((item, index) => (
-                    <ListGroup.Item key={index}>
-                      <Row>
-                        <Col md={1}>
+                    <ListGroup.Item key={index} className="px-0 border-bottom">
+                      <Row className="align-items-center">
+                        <Col xs={3} md={2}>
                           <Image
                             src={item.image}
                             alt={item.name}
@@ -155,12 +169,10 @@ const OrderPage = () => {
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/${item.product}`}>
-                            {item.name}
-                          </Link>
+                          <Link to={`/product/${item.product}`}>{item.name}</Link>
                         </Col>
-                        <Col md={4}>
-                          {item.qty} x ₹{item.price} = ₹{item.qty * item.price}
+                        <Col xs={12} md={4} className="text-md-end mt-2 mt-md-0">
+                          {item.qty} × ₹{item.price} = ₹{item.qty * item.price}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -171,45 +183,77 @@ const OrderPage = () => {
           </ListGroup>
         </Col>
         <Col md={4}>
-          <Card>
+          <Card className="border-0 shadow-sm rounded-4 cart-summary-card mt-4 mt-md-0 order-summary-sidebar">
             <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h2>Order Summary</h2>
+              <ListGroup.Item className="bg-transparent border-0 pt-4 px-4">
+                <h2 className="section-subheading mb-3">Order summary</h2>
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
+              <ListGroup.Item className="bg-transparent border-0 px-4">
+                <Row className="text-muted">
                   <Col>Items</Col>
-                  <Col>₹{order.itemsPrice}</Col>
+                  <Col className="text-end fw-semibold text-dark">
+                    ₹{displayItemsPrice}
+                  </Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
+              <ListGroup.Item className="bg-transparent border-0 px-4">
+                <Row className="text-muted">
                   <Col>Shipping</Col>
-                  <Col>₹{order.shippingPrice}</Col>
+                  <Col className="text-end fw-semibold text-dark">
+                    ₹{order.shippingPrice}
+                  </Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
+              <ListGroup.Item className="bg-transparent border-0 px-4">
+                <Row className="text-muted">
                   <Col>Tax</Col>
-                  <Col>₹{order.taxPrice}</Col>
+                  <Col className="text-end fw-semibold text-dark">
+                    ₹{order.taxPrice}
+                  </Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
+              <ListGroup.Item className="bg-transparent border-0 px-4">
                 <Row>
-                  <Col>Total</Col>
-                  <Col>₹{order.totalPrice}</Col>
+                  <Col className="fw-bold text-dark">Total</Col>
+                  <Col
+                    className="text-end fw-bold fs-5"
+                    style={{ color: "var(--gs-orange)" }}
+                  >
+                    ₹{order.totalPrice}
+                  </Col>
                 </Row>
               </ListGroup.Item>
-              {!order.isPaid && (
-                <ListGroup.Item>
+              {isOrderOwner && !order.isPaid && !order.isCancelled && (
+                <ListGroup.Item className="bg-transparent border-0 px-4">
+                  <Button
+                    variant="outline-danger"
+                    className="w-100 mb-3"
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          "Cancel this unpaid order? Stock will be returned for other customers."
+                        )
+                      ) {
+                        dispatch(cancelOrder(order._id));
+                      }
+                    }}
+                  >
+                    Cancel order
+                  </Button>
+                </ListGroup.Item>
+              )}
+              {!order.isPaid && !order.isCancelled && (
+                <ListGroup.Item className="bg-transparent border-0 px-4">
                   {loadingPay && <Load />}
                   {!sdkReady ? (
                     <Load />
                   ) : (
-                    <PayPalButton
-                      amount={order.totalPrice}
-                      onSuccess={successPaymentHandler}
-                    />
+                    <div className="paypal-wrap py-2">
+                      <PayPalButton
+                        amount={order.totalPrice}
+                        onSuccess={successPaymentHandler}
+                      />
+                    </div>
                   )}
                 </ListGroup.Item>
               )}
@@ -218,13 +262,13 @@ const OrderPage = () => {
                 userInfo.isAdmin &&
                 order.isPaid &&
                 !order.isDelivered && (
-                  <ListGroup.Item>
+                  <ListGroup.Item className="bg-transparent border-0 px-4 pb-4">
                     <Button
                       type="button"
-                      className="btn btn-block"
+                      className="btn-store-primary w-100 py-2"
                       onClick={handleDelivered}
                     >
-                      Mark As Delivered
+                      Mark as delivered
                     </Button>
                   </ListGroup.Item>
                 )}

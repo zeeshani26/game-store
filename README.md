@@ -5,7 +5,15 @@
 
 The Game Store is an E-Commerce platform to buy latest game titles online.
 
-Note : The Backend for the site is deployed for free on render.com therefore it might take 2-3 minutes at max to load the site for the first time. Your patience is appreciated.
+**Last updated:** 1 March 2026 — API routing, admin catalog, product creation flow, seed data, and local-dev proxy behavior were refreshed; you do not need to hardcode the production API URL in source for deployment (see below).
+
+Note: The backend is deployed on [Render](https://render.com) (free tier), so the first request after idle spin-up can take about 2–3 minutes. Your patience is appreciated.
+
+### Frontend and API URL
+
+- **Local development (`npm start` in `frontend`):** Requests use the relative path `/api`, which Create React App proxies to the backend (`package.json` → `http://127.0.0.1:5000`). Use this with a local MongoDB and `node seeder.js` when you want your machine to own the data.
+- **Production build (`npm run build`):** The client defaults to the deployed API at `https://backend-48az.onrender.com/api` (see `frontend/src/config.js`). You **do not** need to change localhost to Render in code before pushing; deploy the frontend as usual.
+- **Override (optional):** Set `REACT_APP_API_URL` (e.g. on Vercel/Netlify) if the API lives at a different origin; if unset in production, the Render URL above is used.
 
 ## Features
 
@@ -78,11 +86,27 @@ Start the client side
   npm start
 ```
 
+## Tests
 
+Run the frontend unit tests once (non-interactive):
+
+```bash
+cd frontend
+npm test -- --watchAll=false
+```
+
+Run the backend unit tests:
+
+```bash
+cd backend
+npm test
+```
+
+On Windows PowerShell, use the same commands from each folder.
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env file
+**Backend** — add a `.env` file under `backend/` (see `backend/.env.example` if present):
 
 `port`
 
@@ -91,6 +115,8 @@ To run this project, you will need to add the following environment variables to
 `JWT_KEY`
 
 `PAYPAL_CLIENT_ID`
+
+**Frontend (optional):** `REACT_APP_API_URL` — only if the API base should not use the defaults in `frontend/src/config.js` (local dev uses `/api` + proxy; production defaults to the Render API).
 
 ## API Reference
 
@@ -218,7 +244,7 @@ To run this project, you will need to add the following environment variables to
   - message: A message indicating the deletion was successful.
   
 - POST "/products" 
-- Description: Create a new product (admin only)
+- Description: Create a new product (admin only). Send JSON with at least `name` and valid `price`; other fields (image, description, publisher, category, countInStock) are optional or defaulted on the server.
 - Returns:
   - The created product.
   

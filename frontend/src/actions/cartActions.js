@@ -5,13 +5,21 @@ import {
   CART_SAVE_PAYMENT_METHOD,
   CART_SAVE_SHIPPING_ADDRESS,
 } from "../constants/cartConstants";
+import { API_BASE } from "../config";
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
-  //getstate to get the state from redux
   try {
-    const product = (
-      await axios.get(`https://backend-48az.onrender.com/api/products/${id}`)
-    ).data;
+    const product = (await axios.get(`${API_BASE}/products/${id}`)).data;
+
+    if (product.countInStock < qty) {
+      window.alert(
+        `Only ${product.countInStock} ${
+          product.countInStock === 1 ? "copy" : "copies"
+        } left in stock.`
+      );
+      return;
+    }
+
     const item = {
       name: product.name,
       qty: qty,

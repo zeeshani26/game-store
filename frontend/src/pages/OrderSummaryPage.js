@@ -19,7 +19,7 @@ const OrderSummaryPage = () => {
   } else if (!cart.paymentMethod) {
     navigate("/payment");
   }
-  //   Calculating prices and Rounding off
+
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
@@ -27,7 +27,7 @@ const OrderSummaryPage = () => {
   cart.itemsPrice = addDecimals(
     cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   );
-  cart.shippingPrice = addDecimals(cart.itemsPrice > 500 ? 0 : 100); // free for orders above 500 rs.
+  cart.shippingPrice = addDecimals(cart.itemsPrice > 500 ? 0 : 100);
   cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)));
   cart.totalPrice = (
     Number(cart.itemsPrice) +
@@ -63,34 +63,37 @@ const OrderSummaryPage = () => {
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
+      <h1 className="section-heading mb-4">Review your order</h1>
       <Row>
         <Col md={8}>
-          <ListGroup variant="flush">
+          <ListGroup variant="flush" className="content-panel">
             <ListGroup.Item>
-              <h2>Shipping</h2>
-              <p>
-                <strong>Address:</strong>
-                {cart.shippingAddress.address}, {cart.shippingAddress.city},
-                {cart.shippingAddress.pin},{cart.shippingAddress.country}
+              <h2 className="section-subheading">Shipping</h2>
+              <p className="mb-0 text-muted">
+                <strong className="text-dark">Address:</strong>{" "}
+                {cart.shippingAddress.address}, {cart.shippingAddress.city},{" "}
+                {cart.shippingAddress.pin}, {cart.shippingAddress.country}
               </p>
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <strong>Method: </strong>
-              {cart.paymentMethod}
+              <h2 className="section-subheading">Payment</h2>
+              <p className="mb-0">
+                <strong className="text-dark">Method:</strong>{" "}
+                {cart.paymentMethod}
+              </p>
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Order Items</h2>
+              <h2 className="section-subheading">Items</h2>
               {cart.cartItems.length === 0 ? (
                 <Message>Your cart is empty</Message>
               ) : (
-                <ListGroup variant="flush">
+                <ListGroup variant="flush" className="border-0">
                   {cart.cartItems.map((item, index) => (
-                    <ListGroup.Item key={index}>
-                      <Row>
-                        <Col md={1}>
+                    <ListGroup.Item key={index} className="px-0 border-bottom">
+                      <Row className="align-items-center">
+                        <Col xs={3} md={2}>
                           <Image
                             src={item.image}
                             alt={item.name}
@@ -99,12 +102,10 @@ const OrderSummaryPage = () => {
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/₹{item.product}`}>
-                            {item.name}
-                          </Link>
+                          <Link to={`/product/${item.product}`}>{item.name}</Link>
                         </Col>
-                        <Col md={4}>
-                          {item.qty} x ₹{item.price} = ₹
+                        <Col xs={12} md={4} className="text-md-end mt-2 mt-md-0">
+                          {item.qty} × ₹{item.price} = ₹
                           {(item.qty * item.price).toFixed(2)}
                         </Col>
                       </Row>
@@ -116,46 +117,57 @@ const OrderSummaryPage = () => {
           </ListGroup>
         </Col>
         <Col md={4}>
-          <Card>
+          <Card className="border-0 shadow-sm rounded-4 order-summary-sidebar cart-summary-card mt-4 mt-md-0">
             <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h2>Order Summary</h2>
+              <ListGroup.Item className="bg-transparent border-0 pt-4 px-4">
+                <h2 className="section-subheading mb-3">Order summary</h2>
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
+              <ListGroup.Item className="bg-transparent border-0 px-4">
+                <Row className="text-muted">
                   <Col>Items</Col>
-                  <Col>₹{cart.itemsPrice}</Col>
+                  <Col className="text-end fw-semibold text-dark">
+                    ₹{cart.itemsPrice}
+                  </Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
+              <ListGroup.Item className="bg-transparent border-0 px-4">
+                <Row className="text-muted">
                   <Col>Shipping</Col>
-                  <Col>₹{cart.shippingPrice}</Col>
+                  <Col className="text-end fw-semibold text-dark">
+                    ₹{cart.shippingPrice}
+                  </Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
+              <ListGroup.Item className="bg-transparent border-0 px-4">
+                <Row className="text-muted">
                   <Col>Tax</Col>
-                  <Col>₹{cart.taxPrice}</Col>
+                  <Col className="text-end fw-semibold text-dark">
+                    ₹{cart.taxPrice}
+                  </Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
+              <ListGroup.Item className="bg-transparent border-0 px-4">
                 <Row>
-                  <Col>Total</Col>
-                  <Col>₹{cart.totalPrice}</Col>
+                  <Col className="fw-bold text-dark">Total</Col>
+                  <Col
+                    className="text-end fw-bold fs-5"
+                    style={{ color: "var(--gs-orange)" }}
+                  >
+                    ₹{cart.totalPrice}
+                  </Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
+              <ListGroup.Item className="bg-transparent border-0 px-4">
                 {error && <Message variant="danger">{error}</Message>}
               </ListGroup.Item>
-              <ListGroup.Item>
+              <ListGroup.Item className="bg-transparent border-0 px-4 pb-4">
                 <Button
                   type="button"
-                  className="btn-block"
-                  disabled={cart.cartItems === 0}
+                  className="btn-store-primary w-100 py-2"
+                  disabled={cart.cartItems.length === 0}
                   onClick={placeOrderHandler}
                 >
-                  Place Order
+                  Place order
                 </Button>
               </ListGroup.Item>
             </ListGroup>

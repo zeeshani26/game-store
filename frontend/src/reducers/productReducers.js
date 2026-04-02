@@ -12,6 +12,7 @@ import {
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DETAILS_FAILED,
   PRODUCT_DETAILS_REQUEST,
+  PRODUCT_DETAILS_RESET,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_LIST_FAILED,
   PRODUCT_LIST_REQUEST,
@@ -26,21 +27,24 @@ import {
 } from "../constants/productContants";
 
 export const productListReducer = (
-  state = { products: [], loading: false },
+  state = { products: [], loading: false, categories: [] },
   { type, payload }
 ) => {
   switch (type) {
     case PRODUCT_LIST_REQUEST:
-      return { loading: true, ...state };
+      return { ...state, loading: true };
     case PRODUCT_LIST_SUCCESS:
       return {
         loading: false,
         products: payload.products,
         pages: payload.TotalPages,
         page: payload.page,
+        categories: Array.isArray(payload.categories)
+          ? payload.categories
+          : state.categories,
       };
     case PRODUCT_LIST_FAILED:
-      return { loading: false, error: payload };
+      return { ...state, loading: false, error: payload };
     default:
       return state;
   }
@@ -57,6 +61,8 @@ export const productDetailsReducer = (
       return { loading: false, product: payload };
     case PRODUCT_DETAILS_FAILED:
       return { loading: false, error: payload };
+    case PRODUCT_DETAILS_RESET:
+      return { loading: false, product: { reviews: [] }, error: undefined };
     default:
       return state;
   }

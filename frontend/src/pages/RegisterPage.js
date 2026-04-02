@@ -38,62 +38,68 @@ const RegisterPage = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setMessage("Passwords do not match !");
+      setMessage("Passwords do not match.");
     } else {
       dispatch(register(name, email, password));
     }
   };
-  console.log(error);
+
   return (
     <FormContainer>
-      <h2>Sign Up</h2>
+      <h1 className="section-heading mb-4">Create account</h1>
+      <p className="text-muted small mb-4">
+        Join The Game Store to track orders and checkout faster.
+      </p>
       {message && <Message variant="danger">{message}</Message>}
-      {error && <Message variant={"danger"}>{error}</Message>}
+      {error && <Message variant="danger">{error}</Message>}
       {loading && <Load />}
       <Form onSubmit={submitHandler}>
-        <FormGroup controlId="name">
+        <FormGroup controlId="name" className="mb-3">
           <FormLabel>Name</FormLabel>
           <FormControl
             type="text"
             value={name}
-            placeholder="Enter Name"
+            placeholder="Your name"
             onChange={(e) => setName(e.target.value)}
-          ></FormControl>
+          />
         </FormGroup>
-        <FormGroup controlId="email">
-          <FormLabel>Email Address</FormLabel>
+        <FormGroup controlId="email" className="mb-3">
+          <FormLabel>Email address</FormLabel>
           <FormControl
-            type="text"
+            type="email"
+            autoComplete="email"
             value={email}
-            placeholder="Enter Email"
+            placeholder="you@example.com"
             onChange={(e) => setEmail(e.target.value)}
-          ></FormControl>
+          />
         </FormGroup>
-        <FormGroup controlId="password">
+        <FormGroup controlId="password" className="mb-3">
           <FormLabel>Password</FormLabel>
           <FormControl
             type="password"
+            autoComplete="new-password"
             value={password}
-            placeholder="Enter Password"
+            placeholder="••••••••"
             onChange={(e) => setPassword(e.target.value)}
-          ></FormControl>
+          />
         </FormGroup>
-        <FormGroup controlId="confirmPassword">
-          <FormLabel>Confirm Password</FormLabel>
+        <FormGroup controlId="confirmPassword" className="mb-3">
+          <FormLabel>Confirm password</FormLabel>
           <FormControl
             type="password"
+            autoComplete="new-password"
             value={confirmPassword}
-            placeholder="Confirm Password"
+            placeholder="••••••••"
             onChange={(e) => setConfirmPassword(e.target.value)}
-          ></FormControl>
+          />
         </FormGroup>
-        <Button type="submit" variant="primary" className="mt-3">
+        <Button type="submit" className="btn-store-primary w-100 mt-2 py-2">
           Register
         </Button>
       </Form>
-      <Row className="py-3">
-        <Col>
-          Already Have an Account ?<Link to={"/login"}>Login</Link>
+      <Row className="mt-4">
+        <Col className="text-center small text-muted">
+          Already have an account? <Link to="/login">Sign in</Link>
         </Col>
       </Row>
     </FormContainer>

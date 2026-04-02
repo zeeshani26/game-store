@@ -19,6 +19,8 @@ import Message from "../components/Message";
 import Load from "../components/Load";
 import { addToCart } from "../actions/cartActions";
 import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productContants";
+import { pushRecentProductId } from "../utils/recentlyViewed";
+import { normalizeCategoryLabelForDisplay } from "../utils/categoryOptions";
 
 const SingleProduct = () => {
   const [qty, setQty] = useState(1);
@@ -50,6 +52,10 @@ const SingleProduct = () => {
     dispatch(listProductDetails(id));
   }, [dispatch, id, successReview]);
 
+  useEffect(() => {
+    if (id) pushRecentProductId(id);
+  }, [id]);
+
   const addToCartHandler = () => {
     dispatch(addToCart(id, qty));
   };
@@ -67,7 +73,9 @@ const SingleProduct = () => {
   return (
     <>
       <Link to="/">
-        <Button className="btn-dark my-3 ">Go Back</Button>
+        <Button variant="outline-secondary" className="btn-outline-store my-3">
+          ← Back to store
+        </Button>
       </Link>
       {loading ? (
         <Load />
@@ -75,14 +83,20 @@ const SingleProduct = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          <Row className="justify-content-around">
+          <Row className="justify-content-around g-4">
             <Col md={6} lg={5}>
-              <Image src={product.image} alt={product.name} fluid />
+              <div className="product-detail-image p-2 bg-white rounded-4 shadow-sm">
+                <Image src={product.image} alt={product.name} fluid rounded />
+              </div>
             </Col>
             <Col md={6} lg={6} xl={5} className="mt-sm-4 mt-md-0">
-              <ListGroup>
+              <ListGroup variant="flush" className="content-panel">
                 <ListGroup.Item>
-                  <h3>{product.name}</h3>
+                  <h1 className="section-heading h4 mb-2">{product.name}</h1>
+                  <p className="text-muted small mb-0">
+                    {product.publisher} ·{" "}
+                    {normalizeCategoryLabelForDisplay(product.category)}
+                  </p>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Rating
@@ -91,21 +105,27 @@ const SingleProduct = () => {
                   />
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <strong>Price : ₹{product.price}</strong>
+                  <span className="price-tag d-block">₹{product.price}</span>
+                </ListGroup.Item>
+                <ListGroup.Item className="product-description text-muted">
+                  {product.description}
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  Description : {product.description}
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  Status:{" "}
-                  <strong>
-                    {product.countInStock > 0 ? "In stock" : "Out of stock"}
-                  </strong>
+                  <strong className="text-dark">Availability: </strong>
+                  <span
+                    className={
+                      product.countInStock > 0 ? "text-success" : "text-danger"
+                    }
+                  >
+                    {product.countInStock > 0
+                      ? `${product.countInStock} in stock`
+                      : "Out of stock"}
+                  </span>
                 </ListGroup.Item>
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
-                    <Row>
-                      <Col>Qty</Col>
+                    <Row className="text-dark">
+                      <Col className="fw-semibold">Qty</Col>
                       <Col>
                         <FormControl
                           as="select"
@@ -123,25 +143,27 @@ const SingleProduct = () => {
                   </ListGroup.Item>
                 )}
                 <ListGroup.Item>
-                  <Link to={"/cart"}>
+                  <Link to={"/cart"} className="text-decoration-none">
                     <Button
-                      className="btn-block"
+                      className="btn-block btn-store-primary"
                       type="button"
                       disabled={product.countInStock <= 0}
                       onClick={addToCartHandler}
                     >
-                      Add To Cart
+                      Add to cart
                     </Button>
                   </Link>
                 </ListGroup.Item>
               </ListGroup>
             </Col>
           </Row>
-          <Row className="mt-3">
-            <Col md={6}>
-              <h2>Reviews</h2>
-              {product.reviews.length === 0 && <Message>No Reviews</Message>}
-              <ListGroup variant="flush">
+          <Row className="mt-4">
+            <Col lg={8}>
+              <h2 className="section-heading">Reviews</h2>
+              {product.reviews.length === 0 && (
+                <Message>No reviews yet — be the first.</Message>
+              )}
+              <ListGroup variant="flush" className="content-panel mt-3">
                 {product.reviews.map((el) => (
                   <ListGroup.Item key={el._id}>
                     <strong>{el.name}</strong>
@@ -151,8 +173,10 @@ const SingleProduct = () => {
                   </ListGroup.Item>
                 ))}
                 {!product.reviews.some((rev) => rev.user === userInfo?._id) && (
-                  <ListGroup.Item>
-                    <h2>Write a Customer Review</h2>
+                  <ListGroup.Item className="border-top">
+                    <h3 className="h5 fw-bold mb-3 text-dark">
+                      Write a review
+                    </h3>
                     {successReview && (
                       <Message variant="success">
                         Review submitted successfully
@@ -183,7 +207,7 @@ const SingleProduct = () => {
                           <Form.Label>Comment</Form.Label>
                           <Form.Control
                             as="textarea"
-                            row="3"
+                            rows={3}
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                           ></Form.Control>
@@ -191,10 +215,9 @@ const SingleProduct = () => {
                         <Button
                           disabled={loadingReview}
                           type="submit"
-                          variant="primary"
-                          className="mt-2"
+                          className="mt-2 btn-store-primary"
                         >
-                          Submit
+                          Submit review
                         </Button>
                       </Form>
                     ) : (

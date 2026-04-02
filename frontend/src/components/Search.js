@@ -16,15 +16,19 @@ const Search = () => {
     }
   };
   return (
-    <Form onSubmit={submitHandler} className="d-flex m-auto">
+    <Form
+      onSubmit={submitHandler}
+      className="d-flex search-bar-store my-2 my-lg-0 ms-lg-4 flex-grow-1"
+      style={{ maxWidth: "420px" }}
+    >
       <Form.Control
-        type="text"
+        type="search"
         name="q"
-        placeholder="Search Games..."
+        placeholder="Search games, genres, publishers…"
         onChange={(e) => setQuery(e.target.value)}
-        className="mr-sm-2 ml-sm-5"
-      ></Form.Control>
-      <Button type="submit" variant="outline-success" className="ms-2">
+        aria-label="Search games"
+      />
+      <Button type="submit" className="btn-search">
         Search
       </Button>
     </Form>

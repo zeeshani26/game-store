@@ -19,25 +19,20 @@ import {
   ORDER_PAY_REQUEST,
   ORDER_PAY_SUCCESS,
 } from "../constants/orderConstants";
+import { API_BASE } from "../config";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch({ type: ORDER_CREATE_REQUEST });
 
     const token = getState().userLogin.userInfo.token;
-    // console.log(token);
-    const { data } = await axios.post(
-      `https://backend-48az.onrender.com/api/orders`,
-      order,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const { data } = await axios.post(`${API_BASE}/orders`, order, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     dispatch({ type: ORDER_CREATE_SUCCESS, payload: data });
-    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -51,19 +46,15 @@ export const createOrder = (order) => async (dispatch, getState) => {
 };
 
 export const getOrderDetails = (id) => async (dispatch, getState) => {
-  //   console.log(id);
   try {
     dispatch({ type: ORDER_DETAILS_REQUEST });
 
     const token = getState().userLogin.userInfo.token;
-    const { data } = await axios.get(
-      `https://backend-48az.onrender.com/api/orders/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const { data } = await axios.get(`${API_BASE}/orders/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -77,15 +68,36 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
   }
 };
 
+export const cancelOrder = (id) => async (dispatch, getState) => {
+  try {
+    const token = getState().userLogin.userInfo.token;
+    await axios.put(
+      `${API_BASE}/orders/${id}/cancel`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    dispatch(getOrderDetails(id));
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    window.alert(message);
+  }
+};
+
 export const payOrder =
   (orderId, paymentResult) => async (dispatch, getState) => {
-    // Payment result will come from paypal
     try {
       dispatch({ type: ORDER_PAY_REQUEST });
 
       const token = getState().userLogin.userInfo.token;
       const { data } = await axios.put(
-        `https://backend-48az.onrender.com/api/orders/${orderId}/pay`,
+        `${API_BASE}/orders/${orderId}/pay`,
         paymentResult,
         {
           headers: {
@@ -112,15 +124,11 @@ export const listMyOrders = () => async (dispatch, getState) => {
     dispatch({ type: ORDER_LIST_MY_REQUEST });
 
     const token = getState().userLogin.userInfo.token;
-    // console.log(token);
-    const { data } = await axios.get(
-      `https://backend-48az.onrender.com/api/orders/myorders`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const { data } = await axios.get(`${API_BASE}/orders/myorders`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     dispatch({ type: ORDER_LIST_MY_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -139,14 +147,11 @@ export const listOrders = () => async (dispatch, getState) => {
     dispatch({ type: ORDER_LIST_REQUEST });
 
     const token = getState().userLogin.userInfo.token;
-    const { data } = await axios.get(
-      `https://backend-48az.onrender.com/api/orders/`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const { data } = await axios.get(`${API_BASE}/orders/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -166,7 +171,7 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
 
     const token = getState().userLogin.userInfo.token;
     const { data } = await axios.put(
-      `https://backend-48az.onrender.com/api/orders/${order._id}/delivered`,
+      `${API_BASE}/orders/${order._id}/delivered`,
       {},
       {
         headers: {

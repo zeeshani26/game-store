@@ -1,19 +1,6 @@
 const products = [
   {
     _id: "1",
-    name: "God Of War I",
-    image: "/images/god_of_war_1.jpg",
-    description:
-      "In God of War, players control Kratos, a Spartan warrior who is sent by the Greek gods to kill Ares, the god of war. As the story progresses, Kratos is revealed to be Ares former servant, who had been tricked into killing his own family and is haunted by terrible nightmares.",
-    publisher: "Sony Computer Entertainment",
-    category: "Action",
-    price: 89.99,
-    countInStock: 3,
-    rating: 4.5,
-    numReviews: 4,
-  },
-  {
-    _id: "2",
     name: "God Of War II",
     image: "/images/god_of_war_2.png",
     description:
@@ -26,33 +13,21 @@ const products = [
     numReviews: 8,
   },
   {
-    _id: "3",
-    name: "God Of War 3",
-    image: "/images/god_of_war_3.jpg",
-    description:
-      "God of War III is an action-adventure game with hack and slash elements. It is a third-person single-player video game. As with previous installments, the player controls the character Kratos from a fixed-camera perspective in combo-based combat, platforming, and puzzle games.",
-    publisher: "Sony Computer Entertainment",
-    category: "Electronics",
-    price: 929.99,
-    countInStock: 5,
-    rating: 3,
-    numReviews: 12,
-  },
-  {
-    _id: "4",
+    _id: "2",
+    /** Shooting (genre) */
     name: "Call Of Duty",
     image: "/images/call_of_duty.jpg",
     description:
       "Call of Duty is a first-person shooter video game franchise published by Activision. Starting out in 2003, it first focused on games set in World War II. Over time, the series has seen games set in the midst of the Cold War, futuristic worlds, and the modern day.",
-    publisher: "Shooter",
-    category: "Activision",
+    publisher: "Activision",
+    category: "Shooting",
     price: 399.99,
     countInStock: 11,
     rating: 5,
     numReviews: 12,
   },
   {
-    _id: "5",
+    _id: "3",
     name: "Forza Horizon 4",
     image: "/images/forza_horizon_4.jpg",
     description:
@@ -65,7 +40,7 @@ const products = [
     numReviews: 10,
   },
   {
-    _id: "6",
+    _id: "4",
     name: "Need For Speed Most Wanted",
     image: "/images/need_for_speed_mw.jpg",
     description:

@@ -3,17 +3,13 @@ import { Spinner } from "react-bootstrap";
 
 const Load = () => {
   return (
-    <div>
+    <div className="py-5 text-center">
       <Spinner
         animation="border"
         role="status"
-        style={{
-          width: "100px",
-          height: "100px",
-          display: "block",
-          margin: "auto",
-        }}
-      ></Spinner>
+        className="store-spinner"
+        aria-label="Loading"
+      />
     </div>
   );
 };

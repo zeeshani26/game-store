@@ -5,13 +5,22 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Load from "../components/Load";
 import FormContainer from "../components/FormContainer";
-import { listProductDetails, updateProduct } from "../actions/productActions";
-import { PRODUCT_UPDATE_RESET } from "../constants/productContants";
+import {
+  listProductDetails,
+  updateProduct,
+  createProduct,
+} from "../actions/productActions";
+import {
+  PRODUCT_UPDATE_RESET,
+  PRODUCT_CREATE_RESET,
+  PRODUCT_DETAILS_RESET,
+} from "../constants/productContants";
 
 const ProductEditPage = () => {
   const { id: productId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isNew = productId === "new";
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
@@ -31,7 +40,37 @@ const ProductEditPage = () => {
     success: successUpdate,
   } = productUpdate;
 
+  const productCreate = useSelector((state) => state.productCreate);
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+  } = productCreate;
+
   useEffect(() => {
+    dispatch({ type: PRODUCT_CREATE_RESET });
+  }, [dispatch, productId]);
+
+  useEffect(() => {
+    if (!isNew) return;
+    dispatch({ type: PRODUCT_DETAILS_RESET });
+    setName("");
+    setPrice(0);
+    setImage("");
+    setPublisher("");
+    setCategory("");
+    setCountInStock("");
+    setDescription("");
+  }, [dispatch, isNew, productId]);
+
+  useEffect(() => {
+    if (isNew || !successCreate) return;
+    dispatch({ type: PRODUCT_CREATE_RESET });
+    navigate("/admin/productlist");
+  }, [isNew, successCreate, dispatch, navigate]);
+
+  useEffect(() => {
+    if (isNew) return;
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       navigate("/admin/productlist");
@@ -49,107 +88,142 @@ const ProductEditPage = () => {
         setDescription(product.description);
       }
     }
-  }, [dispatch, productId, product, navigate, successUpdate]);
+  }, [dispatch, productId, product, navigate, successUpdate, isNew]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // Update Product
-    dispatch(
-      updateProduct({
-        _id: productId,
-        name,
-        price,
-        image,
-        publisher,
-        category,
-        countInStock,
-        description,
-      })
-    );
+    const trimmed = String(name || "").trim();
+    if (!trimmed) {
+      return;
+    }
+    if (isNew) {
+      dispatch(
+        createProduct({
+          name: trimmed,
+          price: Number(price),
+          image,
+          publisher,
+          category,
+          countInStock,
+          description,
+        })
+      );
+    } else {
+      dispatch(
+        updateProduct({
+          _id: productId,
+          name: trimmed,
+          price,
+          image,
+          publisher,
+          category,
+          countInStock,
+          description,
+        })
+      );
+    }
   };
+
+  const showFormLoader = !isNew && loading;
 
   return (
     <>
-      <Link to="/admin/productlist" className="btn btn-light my-3">
-        Go Back
+      <Link
+        to="/admin/productlist"
+        className="btn btn-outline-store mb-4 d-inline-flex align-items-center gap-2"
+      >
+        ← Back to products
       </Link>
-      <FormContainer>
-        <h2>Edit Product</h2>
-        {loadingUpdate && <Load />}
+      <FormContainer wide>
+        <h1 className="section-heading mb-4">
+          {isNew ? "Create product" : "Edit product"}
+        </h1>
+        {(loadingCreate || loadingUpdate) && <Load />}
+        {errorCreate && <Message variant="danger">{errorCreate}</Message>}
         {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
-        {loading ? (
+        {showFormLoader ? (
           <Load />
-        ) : error ? (
+        ) : error && !isNew ? (
           <Message variant="danger">{error}</Message>
         ) : (
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name">
+            <Form.Group controlId="name" className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control
-                type="name"
-                placeholder="Enter name"
+                type="text"
+                placeholder="Product name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-              ></Form.Control>
+                required
+              />
             </Form.Group>
 
-            <Form.Group controlId="price">
-              <Form.Label>Price</Form.Label>
+            <Form.Group controlId="price" className="mb-3">
+              <Form.Label>Price (₹)</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="Enter price"
+                min="0"
+                step="0.01"
+                placeholder="Price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-              ></Form.Control>
+                required
+              />
             </Form.Group>
 
-            <Form.Group controlId="image">
-              <Form.Label>Image</Form.Label>
+            <Form.Group controlId="image" className="mb-3">
+              <Form.Label>Image URL</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Image URL"
+                placeholder="https://… or /images/…"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
-            <Form.Group controlId="publisher">
+            <Form.Group controlId="publisher" className="mb-3">
               <Form.Label>Publisher</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter publisher"
+                placeholder="Publisher"
                 value={publisher}
                 onChange={(e) => setPublisher(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
-            <Form.Group controlId="category">
+            <Form.Group controlId="category" className="mb-3">
               <Form.Label>Category</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Category"
+                placeholder="Category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
-            <Form.Group controlId="CountInStock">
-              <Form.Label>Count In Stock</Form.Label>
+            <Form.Group controlId="CountInStock" className="mb-3">
+              <Form.Label>Stock count</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="Enter CountInStock "
+                min="0"
+                placeholder="Units in stock"
                 value={countInStock}
                 onChange={(e) => setCountInStock(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
-            <Form.Group controlId="description">
+            <Form.Group controlId="description" className="mb-4">
               <Form.Label>Description</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="Enter Description "
+                as="textarea"
+                rows={4}
+                placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
-            <Button type="submit" variant="primary" className="mt-3">
-              Update
+            <Button
+              type="submit"
+              className="btn-store-primary w-100 py-2"
+              disabled={loadingCreate || loadingUpdate}
+            >
+              {isNew ? "Create product" : "Save product"}
             </Button>
           </Form>
         )}

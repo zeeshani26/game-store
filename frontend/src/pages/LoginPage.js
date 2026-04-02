@@ -38,35 +38,42 @@ const LoginPage = () => {
   };
   return (
     <FormContainer>
-      <h2>Sign In </h2>
+      <h1 className="section-heading mb-4">Sign in</h1>
+      <p className="text-muted small mb-4">
+        Welcome back. Enter your credentials to access your account and
+        orders.
+      </p>
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Load />}
       <Form onSubmit={submitHandler}>
-        <FormGroup controlId="email">
-          <FormLabel>Email Address</FormLabel>
+        <FormGroup controlId="email" className="mb-3">
+          <FormLabel>Email address</FormLabel>
           <FormControl
-            type="text"
+            type="email"
+            autoComplete="email"
             value={email}
-            placeholder="Enter Email"
+            placeholder="you@example.com"
             onChange={(e) => setEmail(e.target.value)}
-          ></FormControl>
+          />
         </FormGroup>
-        <FormGroup controlId="password">
+        <FormGroup controlId="password" className="mb-3">
           <FormLabel>Password</FormLabel>
           <FormControl
             type="password"
+            autoComplete="current-password"
             value={password}
-            placeholder="Enter Password"
+            placeholder="••••••••"
             onChange={(e) => setPassword(e.target.value)}
-          ></FormControl>
+          />
         </FormGroup>
-        <Button type="submit" variant="primary" className="mt-3">
-          Sign In
+        <Button type="submit" className="btn-store-primary w-100 mt-2 py-2">
+          Sign in
         </Button>
       </Form>
-      <Row className="my-3">
-        <Col>
-          New Customer ? <Link to={"/register"}>Register</Link>
+      <Row className="mt-4">
+        <Col className="text-center small text-muted">
+          New customer?{" "}
+          <Link to="/register">Create an account</Link>
         </Col>
       </Row>
     </FormContainer>

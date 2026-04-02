@@ -1,5 +1,7 @@
-const express = require("express");
 const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, ".env") });
+
+const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 
@@ -16,12 +18,10 @@ app.use(express.json());
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST", "PATCH", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })
 );
 app.use(morgan("dev"));
-
-require("dotenv").config();
 
 app.get("/", (req, res) => {
   res.send("API is running");

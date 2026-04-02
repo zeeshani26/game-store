@@ -3,7 +3,6 @@ import { Form, Button, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
-// import { savePaymentMethod } from "../actions/cartActions";
 import { useNavigate } from "react-router-dom";
 import { savePaymentMethod } from "../actions/cartActions";
 
@@ -27,20 +26,25 @@ const PaymentPage = () => {
   return (
     <FormContainer>
       <CheckoutSteps step1 step2 step3 />
-      <h2>Payment Method</h2>
-      <Form onSubmit={submitHandler} className="mt-3">
+      <h1 className="section-heading mb-3">Payment method</h1>
+      <p className="text-muted small mb-4">
+        Choose how you would like to pay. PayPal supports cards where available.
+      </p>
+      <Form onSubmit={submitHandler} className="mt-1">
         <Form.Group>
-          <Form.Label as="legend">Select Method</Form.Label>
-          <Col>
+          <Form.Label as="legend" className="fw-semibold">
+            Select method
+          </Form.Label>
+          <Col className="mb-2">
             <Form.Check
               type="radio"
-              label="PayPal or Debit Card"
+              label="PayPal or debit / credit card"
               id="PayPal"
               name="paymentMethod"
               value="PayPal"
-              checked
+              checked={paymentMethod === "PayPal"}
               onChange={(e) => setPaymentMethod(e.target.value)}
-            ></Form.Check>
+            />
           </Col>
           <Col>
             <Form.Check
@@ -51,12 +55,12 @@ const PaymentPage = () => {
               value="UPI"
               checked={paymentMethod === "UPI"}
               onChange={(e) => setPaymentMethod(e.target.value)}
-            ></Form.Check>
+            />
           </Col>
         </Form.Group>
 
-        <Button type="submit" variant="primary" className="mt-2">
-          Continue
+        <Button type="submit" className="btn-store-primary w-100 mt-4 py-2">
+          Continue to review
         </Button>
       </Form>
     </FormContainer>

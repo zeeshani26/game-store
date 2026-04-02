@@ -17,20 +17,36 @@ const Header = () => {
   };
   return (
     <header>
-      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+      <Navbar
+        className="navbar-store"
+        variant="dark"
+        expand="lg"
+        collapseOnSelect
+      >
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>
-              <h2>The Game Store</h2>
+              <img
+                src={`${process.env.PUBLIC_URL}/gamestore-logo.png`}
+                alt="The Game Store"
+                className="navbar-logo"
+                width="52"
+                height="52"
+              />
+              <span className="brand-text">
+                <small>Play more. Pay smart.</small>
+                <span>The Game Store</span>
+              </span>
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Search />
-            <Nav className="ms-auto">
+            <Nav className="ms-auto align-items-lg-center">
               <LinkContainer to="/cart">
                 <Nav.Link>
-                  <i className="fas fa-shopping-cart"></i> Cart
+                  <i className="fas fa-shopping-cart me-1" aria-hidden />
+                  Cart
                 </Nav.Link>
               </LinkContainer>
               {userInfo ? (
@@ -45,7 +61,8 @@ const Header = () => {
               ) : (
                 <LinkContainer to="/login">
                   <Nav.Link>
-                    <i className="fas fa-user"></i>Sign In
+                    <i className="fas fa-user me-1" aria-hidden />
+                    Sign In
                   </Nav.Link>
                 </LinkContainer>
               )}

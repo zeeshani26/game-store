@@ -52,14 +52,21 @@ const CartPage = () => {
       </Modal>
       <Row>
         <Col md={8}>
-          <h2>Shopping Cart</h2>
+          <h1 className="section-heading">Shopping cart</h1>
+          <p className="text-muted small mb-4">
+            Review items and quantities before checkout. Shipping and tax are
+            calculated on the next steps.
+          </p>
           {cartItems.length === 0 ? (
             <Message>
               Your Cart is Empty,
               <Link to="/"> Go back to products </Link>
             </Message>
           ) : (
-            <ListGroup variant="flush">
+            <ListGroup
+              variant="flush"
+              className="rounded-4 overflow-hidden shadow-sm border bg-white"
+            >
               {cartItems.map((item) => (
                 <ListGroup.Item key={item.product}>
                   <Row className="text">
@@ -132,26 +139,28 @@ const CartPage = () => {
         </Col>
 
         <Col md={4}>
-          <Card className="my-5">
+          <Card className="my-5 border-0 shadow-sm rounded-4 cart-summary-card">
             <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h4>
+              <ListGroup.Item className="bg-transparent border-0 pt-4 px-4">
+                <h4 className="h5 fw-bold text-dark">
                   Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}
                   ) items
                 </h4>
-                ₹
-                {cartItems
-                  .reduce((acc, item) => acc + item.price * item.qty, 0)
-                  .toFixed(2)}
+                <p className="mb-0 fs-4 fw-bold" style={{ color: "var(--gs-orange)" }}>
+                  ₹
+                  {cartItems
+                    .reduce((acc, item) => acc + item.price * item.qty, 0)
+                    .toFixed(2)}
+                </p>
               </ListGroup.Item>
-              <ListGroup.Item>
+              <ListGroup.Item className="bg-transparent border-0 px-4 pb-4">
                 <Button
                   type="button"
-                  className="btn-block"
+                  className="btn-block btn-store-primary py-2"
                   disabled={!cartItems.length}
                   onClick={checkoutHandler}
                 >
-                  Check Out
+                  Proceed to checkout
                 </Button>
               </ListGroup.Item>
             </ListGroup>

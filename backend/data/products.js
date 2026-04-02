@@ -1,17 +1,5 @@
 const products = [
   {
-    name: "God Of War I",
-    image: "/images/god_of_war_1.png",
-    description:
-      "In God of War, players control Kratos, a Spartan warrior who is sent by the Greek gods to kill Ares, the god of war. As the story progresses, Kratos is revealed to be Ares former servant, who had been tricked into killing his own family and is haunted by terrible nightmares.",
-    publisher: "Sony Computer Entertainment",
-    category: "Action",
-    price: 89.99,
-    countInStock: 3,
-    rating: 4.5,
-    numReviews: 0,
-  },
-  {
     name: "God Of War II",
     image: "/images/god_of_war_2.png",
     description:
@@ -24,24 +12,13 @@ const products = [
     numReviews: 0,
   },
   {
-    name: "God Of War 3",
-    image: "/images/god_of_war_3.jpg",
-    description:
-      "God of War III is an action-adventure game with hack and slash elements. It is a third-person single-player video game. As with previous installments, the player controls the character Kratos from a fixed-camera perspective in combo-based combat, platforming, and puzzle games.",
-    publisher: "Sony Computer Entertainment",
-    category: "Electronics",
-    price: 929.99,
-    countInStock: 5,
-    rating: 3,
-    numReviews: 0,
-  },
-  {
+    /** Shooting (genre) */
     name: "Call Of Duty",
     image: "/images/call_of_duty.jpg",
     description:
       "Call of Duty is a first-person shooter video game franchise published by Activision. Starting out in 2003, it first focused on games set in World War II. Over time, the series has seen games set in the midst of the Cold War, futuristic worlds, and the modern day.",
-    publisher: "Shooter",
-    category: "Activision",
+    publisher: "Activision",
+    category: "Shooting",
     price: 399.99,
     countInStock: 11,
     rating: 5,
@@ -69,6 +46,126 @@ const products = [
     price: 29.99,
     countInStock: 0,
     rating: 4,
+    numReviews: 0,
+  },
+  {
+    name: "Silent Hill Townfall",
+    image: "/images/silent_hill_townfall.png",
+    description:
+      "A psychological survival horror entry in the Silent Hill series. Atmospheric exploration and dread-filled storytelling with Konami and Annapurna Games. PlayStation 5. (Cover may show rating pending / artwork not final where applicable.)",
+    publisher: "Konami",
+    category: "Horror",
+    price: 4499.99,
+    countInStock: 8,
+    rating: 0,
+    numReviews: 0,
+  },
+  {
+    name: "Ghost of Yōtei",
+    image: "/images/ghost_of_yotei.png",
+    description:
+      "Open-world action-adventure from Sucker Punch Productions and PlayStation Studios. Explore a vivid landscape inspired by feudal Japan, with Mount Yōtei on the horizon, refined combat, and a new protagonist—spiritual successor to Ghost of Tsushima. PS5.",
+    publisher: "PlayStation Studios",
+    category: "Action",
+    price: 4999.99,
+    countInStock: 12,
+    rating: 4.8,
+    numReviews: 0,
+  },
+  {
+    name: "Rise of the Tomb Raider",
+    image: "/images/rise_of_the_tomb_raider.png",
+    description:
+      "Action-adventure third-person game starring Lara Croft. Journey through Siberia in search of the lost city of Kitezh while facing Trinity and harsh survival conditions—climbing, combat, and puzzle tombs. From Crystal Dynamics; published by Square Enix. Xbox One edition.",
+    publisher: "Square Enix",
+    category: "Action",
+    price: 2499.99,
+    countInStock: 6,
+    rating: 4.6,
+    numReviews: 0,
+  },
+  {
+    name: "Marvel's Spider-Man 2",
+    image: "/images/marvel_spider_man_2.png",
+    description:
+      "Insomniac Games’ open-world superhero epic on PS5. Switch between Peter Parker and Miles Morales across Marvel’s New York, with an expanded story, new abilities, and cinematic action. Teen-rated adventure from PlayStation Studios.",
+    publisher: "PlayStation Studios",
+    category: "Action",
+    price: 3999.99,
+    countInStock: 15,
+    rating: 4.9,
+    numReviews: 0,
+  },
+  {
+    name: "Assetto Corsa Competizione (Day One Edition)",
+    image: "/images/assetto_corsa_competizione.png",
+    description:
+      "The official GT World Challenge game—realistic circuit racing and GT3/GT4 simulation from Kunos Simulazioni. Day One Edition on PS5 includes the 2020 GT World Challenge Pack DLC. Published by 505 Games. ESRB Everyone.",
+    publisher: "505 Games",
+    category: "Racing",
+    price: 2999.99,
+    countInStock: 10,
+    rating: 4.5,
+    numReviews: 0,
+  },
+  {
+    name: "WWE 2K26",
+    image: "/images/wwe_2k26.png",
+    description:
+      "WWE sports simulation from 2K featuring roster stars and arena action—create rivalries, play through modes, and step into the ring. Teen-rated wrestling game for PlayStation 5.",
+    publisher: "2K Sports",
+    category: "Sports",
+    price: 3999.99,
+    countInStock: 9,
+    rating: 4.0,
+    numReviews: 0,
+  },
+  {
+    name: "Resident Evil Requiem",
+    image: "/images/resident_evil_requiem.png",
+    description:
+      "Survival horror from Capcom. Explore a shattered Raccoon City atmosphere with tense combat, scarce resources, and classic Resident Evil tension. Mature-rated PS5 title.",
+    publisher: "Capcom",
+    category: "Horror",
+    price: 4499.99,
+    countInStock: 7,
+    rating: 0,
+    numReviews: 0,
+  },
+  {
+    name: "Tekken 8",
+    image: "/images/tekken_8.png",
+    description:
+      "The next mainline fighting game in the Tekken series from Bandai Namco. Aggressive 3D battles, a cinematic story focus on the Mishima saga, and competitive modes. Teen-rated. PS5.",
+    publisher: "Bandai Namco",
+    category: "Fighting",
+    price: 3999.99,
+    countInStock: 11,
+    rating: 4.7,
+    numReviews: 0,
+  },
+  {
+    name: "Resident Evil 3",
+    image: "/images/resident_evil_3.png",
+    description:
+      "Survival horror remake: Jill Valentine and Carlos Oliveira fight to escape Raccoon City while the relentless Nemesis hunts you through streets and ruins. Third-person action-horror from Capcom. Mature-rated. PS5.",
+    publisher: "Capcom",
+    category: "Horror",
+    price: 2999.99,
+    countInStock: 8,
+    rating: 4.5,
+    numReviews: 0,
+  },
+  {
+    name: "Mortal Kombat 1",
+    image: "/images/mortal_kombat_1.png",
+    description:
+      "NetherRealm’s rebooted Mortal Kombat timeline—brutal fighting, cinematic story, and iconic fighters with Liu Kang reshaping realms. Warner Bros. Games. Mature-rated. PS5.",
+    publisher: "Warner Bros. Games",
+    category: "Fighting",
+    price: 3499.99,
+    countInStock: 10,
+    rating: 4.6,
     numReviews: 0,
   },
 ];

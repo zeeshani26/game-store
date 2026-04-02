@@ -5,7 +5,6 @@ const Rating = ({ value, text }) => {
     <div className="rating">
       <span>
         <i
-          style={{ color: "goldenrod" }}
           className={
             value >= 1
               ? "fas fa-star"
@@ -13,11 +12,10 @@ const Rating = ({ value, text }) => {
               ? "fas fa-star-half-alt"
               : "far fa-star"
           }
-        ></i>
+        />
       </span>
       <span>
         <i
-          style={{ color: "goldenrod" }}
           className={
             value >= 2
               ? "fas fa-star"
@@ -25,11 +23,10 @@ const Rating = ({ value, text }) => {
               ? "fas fa-star-half-alt"
               : "far fa-star"
           }
-        ></i>
+        />
       </span>
       <span>
         <i
-          style={{ color: "goldenrod" }}
           className={
             value >= 3
               ? "fas fa-star"
@@ -37,11 +34,10 @@ const Rating = ({ value, text }) => {
               ? "fas fa-star-half-alt"
               : "far fa-star"
           }
-        ></i>
+        />
       </span>
       <span>
         <i
-          style={{ color: "goldenrod" }}
           className={
             value >= 4
               ? "fas fa-star"
@@ -49,11 +45,10 @@ const Rating = ({ value, text }) => {
               ? "fas fa-star-half-alt"
               : "far fa-star"
           }
-        ></i>
+        />
       </span>
       <span>
         <i
-          style={{ color: "goldenrod" }}
           className={
             value >= 5
               ? "fas fa-star"
@@ -61,9 +56,9 @@ const Rating = ({ value, text }) => {
               ? "fas fa-star-half-alt"
               : "far fa-star"
           }
-        ></i>
+        />
       </span>
-      <span>{text ? text : ""}</span>
+      <span className="rating-text ms-1">{text ? text : ""}</span>
     </div>
   );
 };

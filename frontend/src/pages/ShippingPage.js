@@ -31,50 +31,56 @@ const ShippingPage = () => {
   return (
     <FormContainer>
       <CheckoutSteps step1 step2 />
-      <h2>Shipping</h2>
+      <h1 className="section-heading mb-3">Shipping</h1>
+      <p className="text-muted small mb-4">
+        Where should we send your order confirmation and delivery updates?
+      </p>
       <Form onSubmit={submitHandler}>
-        <FormGroup controlId="address">
-          <FormLabel>Address</FormLabel>
+        <FormGroup controlId="address" className="mb-3">
+          <FormLabel>Street address</FormLabel>
           <FormControl
             type="text"
             value={address}
-            placeholder="Enter Address"
+            placeholder="Address line"
             required
             onChange={(e) => setAddress(e.target.value)}
-          ></FormControl>
+          />
         </FormGroup>
-        <FormGroup controlId="city">
+        <FormGroup controlId="city" className="mb-3">
           <FormLabel>City</FormLabel>
           <FormControl
             type="text"
             value={city}
-            placeholder="Enter city"
+            placeholder="City"
             required
             onChange={(e) => setCity(e.target.value)}
-          ></FormControl>
+          />
         </FormGroup>
-        <FormGroup controlId="pin">
-          <FormLabel>Pin Code</FormLabel>
+        <FormGroup controlId="pin" className="mb-3">
+          <FormLabel>PIN / postal code</FormLabel>
           <FormControl
             type="text"
             value={pin}
-            placeholder="Enter PIN Code"
+            placeholder="PIN code"
             required
             onChange={(e) => setPin(e.target.value)}
-          ></FormControl>
+          />
         </FormGroup>
-        <FormGroup controlId="country">
+        <FormGroup controlId="country" className="mb-3">
           <FormLabel>Country</FormLabel>
           <FormControl
             type="text"
             value={country}
-            placeholder="Enter Country"
+            placeholder="Country"
             required
             onChange={(e) => setCountry(e.target.value)}
-          ></FormControl>
+          />
         </FormGroup>
-        <Button type="submit" variant="primary" className="mt-3">
-          Continue to Payment
+        <Button
+          type="submit"
+          className="btn-store-primary w-100 mt-2 py-2"
+        >
+          Continue to payment
         </Button>
       </Form>
     </FormContainer>

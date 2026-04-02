@@ -23,61 +23,83 @@ const UserListPage = () => {
   }, [dispatch, userInfo, navigate, successDelete]);
 
   const deleteHandler = (id) => {
-    if (window.confirm("Are you sure you want to delete the User?")) {
+    if (window.confirm("Are you sure you want to delete this user?")) {
       dispatch(deleteUser(id));
     }
   };
+
   return (
     <>
-      <h2>Users</h2>
+      <div className="admin-page-toolbar">
+        <h1 className="section-heading mb-2">Users</h1>
+        <p className="text-muted small mb-0">
+          Admin: manage registered accounts and roles.
+        </p>
+      </div>
       {loading ? (
         <Load />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Table striped hover responsive bordered className="table-sm">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>NAME</th>
-              <th>EMAIL</th>
-              <th>ADMIN</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user._id}>
-                <td>{user._id}</td>
-                <td>{user.name}</td>
-                <td>
-                  <a href={`mailto:${user.email}`}>{user.email}</a>
-                </td>
-                <td>
-                  {user.isAdmin ? (
-                    <i className="fas fa-check" style={{ color: "green" }}></i>
-                  ) : (
-                    <i className="fas fa-times" style={{ color: "red" }}></i>
-                  )}
-                </td>
-                <td>
-                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
-                    <Button variant="light" className="btn-sm">
-                      <i className="fas fa-edit"></i>
-                    </Button>
-                  </LinkContainer>
-                  <Button
-                    variant="danger"
-                    className="btn-sm"
-                    onClick={() => deleteHandler(user._id)}
-                  >
-                    <i className="fas fa-trash"></i>
-                  </Button>
-                </td>
+        <div className="table-responsive rounded-3 shadow-sm border bg-white">
+          <Table
+            striped
+            hover
+            responsive
+            bordered
+            className="store-table table-sm mb-0"
+          >
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th />
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user._id}>
+                  <td className="text-break small">{user._id}</td>
+                  <td>{user.name}</td>
+                  <td>
+                    <a href={`mailto:${user.email}`}>{user.email}</a>
+                  </td>
+                  <td>
+                    {user.isAdmin ? (
+                      <i
+                        className="fas fa-check text-success"
+                        aria-label="Yes"
+                      />
+                    ) : (
+                      <i className="fas fa-times text-danger" aria-label="No" />
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/admin/user/${user._id}/edit`}>
+                      <Button
+                        variant="outline-secondary"
+                        size="sm"
+                        className="btn-outline-store me-1"
+                      >
+                        <i className="fas fa-edit" aria-hidden />
+                      </Button>
+                    </LinkContainer>
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
+                      onClick={() => deleteHandler(user._id)}
+                      aria-label="Delete user"
+                    >
+                      <i className="fas fa-trash" aria-hidden />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       )}
     </>
   );
