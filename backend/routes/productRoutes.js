@@ -23,19 +23,19 @@ async function sendFullCatalog(req, res) {
   let sortOption = {};
   switch (req.query.sort) {
     case "price_asc":
-      sortOption = { price: 1 };
+      sortOption = { price: 1, _id: -1 };
       break;
     case "price_desc":
-      sortOption = { price: -1 };
+      sortOption = { price: -1, _id: -1 };
       break;
     case "rating":
-      sortOption = { rating: -1 };
+      sortOption = { rating: -1, _id: -1 };
       break;
     case "name":
-      sortOption = { name: 1 };
+      sortOption = { name: 1, _id: -1 };
       break;
     default:
-      sortOption = { createdAt: -1 };
+      sortOption = { createdAt: -1, _id: -1 };
   }
 
   const products = await Product.find(filter)
@@ -79,19 +79,19 @@ router.get(
     let sortOption = {};
     switch (req.query.sort) {
       case "price_asc":
-        sortOption = { price: 1 };
+        sortOption = { price: 1, _id: -1 };
         break;
       case "price_desc":
-        sortOption = { price: -1 };
+        sortOption = { price: -1, _id: -1 };
         break;
       case "rating":
-        sortOption = { rating: -1 };
+        sortOption = { rating: -1, _id: -1 };
         break;
       case "name":
-        sortOption = { name: 1 };
+        sortOption = { name: 1, _id: -1 };
         break;
       default:
-        sortOption = { createdAt: -1 };
+        sortOption = { createdAt: -1, _id: -1 };
     }
 
     const count = await Product.countDocuments(filter);

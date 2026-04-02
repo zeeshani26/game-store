@@ -21,23 +21,12 @@ describe("filterProductsByCategory", () => {
     expect(filterProductsByCategory(items, "Sports")).toEqual([]);
   });
 
-  it("treats Activision and Shooter as Shooting", () => {
+  it("filters by category case-insensitively without name fallbacks", () => {
     const mixed = [
-      { _id: "a", category: "Activision", name: "CoD" },
-      { _id: "b", category: "Shooter", name: "X" },
-      { _id: "c", category: "Shooting", name: "Y" },
-    ];
-    const out = filterProductsByCategory(mixed, "Shooting");
-    expect(out.map((p) => p._id)).toEqual(["a", "b", "c"]);
-  });
-
-  it("includes titles with god of war in the name under Action when category is mis-tagged", () => {
-    const mixed = [
-      { _id: "1", category: "Electronics", name: "Bundle God Of War Edition" },
       { _id: "2", category: "Action", name: "Some Action Game" },
       { _id: "3", category: "Racing", name: "Forza" },
     ];
-    const out = filterProductsByCategory(mixed, "Action");
-    expect(out.map((p) => p._id).sort()).toEqual(["1", "2"]);
+    const out = filterProductsByCategory(mixed, "action");
+    expect(out.map((p) => p._id)).toEqual(["2"]);
   });
 });

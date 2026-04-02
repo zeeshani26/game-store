@@ -43,11 +43,9 @@ export const listProducts =
       if (sort) params.set("sort", sort);
 
       if (options.adminList) {
-        /* Admin table needs every product; default pageSize is 4 without these params. */
         params.set("pageNumber", "1");
         params.set("pageSize", "100");
       } else if (category && category !== "all") {
-        /* Server filters in sendFullCatalog (category + optional GoW name match). */
         params.set("fullCatalog", "1");
         params.set("category", category);
       } else {

@@ -93,7 +93,7 @@ const ProductListPage = () => {
                 <tr key={product._id}>
                   <td className="text-break small">{product._id}</td>
                   <td>{product.name}</td>
-                  <td>₹{product.price}</td>
+                  <td>${product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.publisher}</td>
                   <td>

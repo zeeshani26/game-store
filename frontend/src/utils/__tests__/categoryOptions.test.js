@@ -18,19 +18,19 @@ describe("extractCategoriesFromProducts", () => {
 });
 
 describe("buildCategoryFilterOptions", () => {
-  it("merges API list, products, and extra display categories", () => {
+  it("merges API list and products categories", () => {
     const out = buildCategoryFilterOptions(["Racing"], [
       { category: "Action" },
       { category: "Racing" },
     ]);
-    expect(out).toEqual(["Action", "Fighting", "Horror", "Racing", "Sports"]);
+    expect(out).toEqual(["Action", "Racing"]);
   });
 });
 
 describe("normalizeCategoryLabelForDisplay", () => {
-  it("maps legacy labels to Shooting", () => {
-    expect(normalizeCategoryLabelForDisplay("Activision")).toBe("Shooting");
-    expect(normalizeCategoryLabelForDisplay("Shooter")).toBe("Shooting");
+  it("trims and returns the input unchanged", () => {
+    expect(normalizeCategoryLabelForDisplay("Activision")).toBe("Activision");
+    expect(normalizeCategoryLabelForDisplay("  Shooter ")).toBe("Shooter");
     expect(normalizeCategoryLabelForDisplay("Shooting")).toBe("Shooting");
     expect(normalizeCategoryLabelForDisplay("Action")).toBe("Action");
   });

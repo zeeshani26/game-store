@@ -172,7 +172,7 @@ const OrderPage = () => {
                           <Link to={`/product/${item.product}`}>{item.name}</Link>
                         </Col>
                         <Col xs={12} md={4} className="text-md-end mt-2 mt-md-0">
-                          {item.qty} × ₹{item.price} = ₹{item.qty * item.price}
+                          {item.qty} × ${item.price} = ${item.qty * item.price}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -192,7 +192,7 @@ const OrderPage = () => {
                 <Row className="text-muted">
                   <Col>Items</Col>
                   <Col className="text-end fw-semibold text-dark">
-                    ₹{displayItemsPrice}
+                    ${displayItemsPrice}
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -200,7 +200,7 @@ const OrderPage = () => {
                 <Row className="text-muted">
                   <Col>Shipping</Col>
                   <Col className="text-end fw-semibold text-dark">
-                    ₹{order.shippingPrice}
+                    ${order.shippingPrice}
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -208,7 +208,7 @@ const OrderPage = () => {
                 <Row className="text-muted">
                   <Col>Tax</Col>
                   <Col className="text-end fw-semibold text-dark">
-                    ₹{order.taxPrice}
+                    ${order.taxPrice}
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -219,7 +219,7 @@ const OrderPage = () => {
                     className="text-end fw-bold fs-5"
                     style={{ color: "var(--gs-orange)" }}
                   >
-                    ₹{order.totalPrice}
+                    ${order.totalPrice}
                   </Col>
                 </Row>
               </ListGroup.Item>

@@ -55,7 +55,7 @@ const RecentlyViewed = () => {
                   {p.name}
                 </div>
                 <div className="small" style={{ color: "var(--gs-orange)" }}>
-                  ₹{p.price}
+                  ${p.price}
                 </div>
               </div>
             </Link>

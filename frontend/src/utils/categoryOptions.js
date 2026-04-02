@@ -1,10 +1,6 @@
-/** Shown in the filter even when no game uses this category yet (empty shelf). */
-export const EXTRA_DISPLAY_CATEGORIES = ["Fighting", "Horror", "Sports"];
-
-/** Legacy DB values that should display and filter as "Shooting". */
+/** Normalize the category string for display and filtering. */
 export function normalizeCategoryLabelForDisplay(label) {
   const s = String(label || "").trim();
-  if (s === "Activision" || s === "Shooter") return "Shooting";
   return s;
 }
 
@@ -39,6 +35,5 @@ export function buildCategoryFilterOptions(apiCategories, products) {
   return normalizeCategoryOptions([
     ...(Array.isArray(apiCategories) ? apiCategories : []),
     ...extractCategoriesFromProducts(products),
-    ...EXTRA_DISPLAY_CATEGORIES,
   ]);
 }

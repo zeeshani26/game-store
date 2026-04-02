@@ -105,7 +105,7 @@ const OrderSummaryPage = () => {
                           <Link to={`/product/${item.product}`}>{item.name}</Link>
                         </Col>
                         <Col xs={12} md={4} className="text-md-end mt-2 mt-md-0">
-                          {item.qty} × ₹{item.price} = ₹
+                          {item.qty} × ${item.price} = $
                           {(item.qty * item.price).toFixed(2)}
                         </Col>
                       </Row>
@@ -126,7 +126,7 @@ const OrderSummaryPage = () => {
                 <Row className="text-muted">
                   <Col>Items</Col>
                   <Col className="text-end fw-semibold text-dark">
-                    ₹{cart.itemsPrice}
+                    ${cart.itemsPrice}
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -134,7 +134,7 @@ const OrderSummaryPage = () => {
                 <Row className="text-muted">
                   <Col>Shipping</Col>
                   <Col className="text-end fw-semibold text-dark">
-                    ₹{cart.shippingPrice}
+                    ${cart.shippingPrice}
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -142,7 +142,7 @@ const OrderSummaryPage = () => {
                 <Row className="text-muted">
                   <Col>Tax</Col>
                   <Col className="text-end fw-semibold text-dark">
-                    ₹{cart.taxPrice}
+                    ${cart.taxPrice}
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -153,7 +153,7 @@ const OrderSummaryPage = () => {
                     className="text-end fw-bold fs-5"
                     style={{ color: "var(--gs-orange)" }}
                   >
-                    ₹{cart.totalPrice}
+                    ${cart.totalPrice}
                   </Col>
                 </Row>
               </ListGroup.Item>

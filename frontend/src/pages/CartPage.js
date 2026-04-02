@@ -147,7 +147,7 @@ const CartPage = () => {
                   ) items
                 </h4>
                 <p className="mb-0 fs-4 fw-bold" style={{ color: "var(--gs-orange)" }}>
-                  ₹
+                  $
                   {cartItems
                     .reduce((acc, item) => acc + item.price * item.qty, 0)
                     .toFixed(2)}

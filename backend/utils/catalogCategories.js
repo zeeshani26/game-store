@@ -1,45 +1,15 @@
-/**
- * Categories shown in filters even when no product is tagged with them yet.
- */
-const EXTRA_DISPLAY_CATEGORIES = ["Fighting", "Horror", "Sports"];
-
-/** Legacy DB values that should appear as "Shooting" in the UI and filters. */
-const LEGACY_SHOOTING_LABELS = ["Activision", "Shooter"];
-
 function normalizeCatalogLabel(c) {
   const s = String(c || "").trim();
-  if (!s) return null;
-  if (LEGACY_SHOOTING_LABELS.includes(s)) return "Shooting";
-  return s;
+  return s || null;
 }
 
 function escapeRegex(s) {
   return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-/**
- * Mongo filter for catalog list when user picks a category (handles legacy labels).
- * Case-insensitive so "action" and "Action" both match.
- * Action also matches certain series-style names (e.g. "God of War") when mis-tagged in DB.
- */
 function buildCategoryFilterQuery(category) {
   if (!category || category === "all") return {};
   const cat = String(category).trim();
-  if (cat.toLowerCase() === "shooting") {
-    return {
-      category: {
-        $regex: /^(Shooting|Activision|Shooter)$/i,
-      },
-    };
-  }
-  if (cat.toLowerCase() === "action") {
-    return {
-      $or: [
-        { category: { $regex: /^Action$/i } },
-        { name: { $regex: /God[\s\u00a0]+of[\s\u00a0]+War/i } },
-      ],
-    };
-  }
   return {
     category: { $regex: new RegExp(`^${escapeRegex(cat)}$`, "i") },
   };
@@ -69,7 +39,6 @@ function mergeCategoryList(distinctFromDb) {
     const n = normalizeCatalogLabel(c);
     if (n) set.add(n);
   });
-  EXTRA_DISPLAY_CATEGORIES.forEach((c) => set.add(c));
   return Array.from(set).sort((a, b) =>
     String(a).localeCompare(String(b), undefined, { sensitivity: "base" })
   );
@@ -77,7 +46,6 @@ function mergeCategoryList(distinctFromDb) {
 
 module.exports = {
   mergeCategoryList,
-  EXTRA_DISPLAY_CATEGORIES,
   buildCategoryFilterQuery,
   combineSearchAndCategory,
   normalizeCatalogLabel,

@@ -41,7 +41,6 @@ body {
   color-scheme: light;
 }
 
-/* Readable secondary text on light backgrounds (fixes washed-out mint) */
 main.main-content .text-muted,
 main.main-content small.text-muted {
   color: var(--gs-text-muted) !important;
@@ -651,7 +650,12 @@ main.main-content .list-group-item {
 .store-table tbody td {
   vertical-align: middle;
   padding: 0.75rem;
-  color: var(--gs-text);
+  /* Force visible contrast on both striped row backgrounds. */
+  color: var(--gs-text) !important;
+}
+
+.store-table.table-striped > tbody > tr > * {
+  color: var(--gs-text) !important;
 }
 
 .store-table.table-striped > tbody > tr:nth-of-type(odd) > * {

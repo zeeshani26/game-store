@@ -105,7 +105,7 @@ const SingleProduct = () => {
                   />
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <span className="price-tag d-block">₹{product.price}</span>
+                  <span className="price-tag d-block">${product.price}</span>
                 </ListGroup.Item>
                 <ListGroup.Item className="product-description text-muted">
                   {product.description}

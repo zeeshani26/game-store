@@ -6,10 +6,7 @@
   "scripts": {
     "build": "npm install",
     "test": "jest --watchAll=false",
-    "start": "node server.js",
-    "fix-categories": "node scripts/fixCategories.js",
-    "remove-gow-legacy": "node scripts/removeGow13Products.js",
-    "remove-placeholders": "node scripts/removePlaceholderProducts.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
